@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inria_Serif } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
+import { Navbar } from "@/components/navbar";
+import { theme } from "@/lib/theme";
+const font = Inria_Serif({ weight: ["300", "400", "700"] , preload: false});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +18,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={font.className}>
+      <head>
+        <ColorSchemeScript />
+      </head>
+      <body className="px-5 py-4">
+        <MantineProvider theme={theme}>
+          <Navbar />
+          <div className="h-[71px]"></div>
+          {children}
+        </MantineProvider>
+      </body>
     </html>
   );
 }
