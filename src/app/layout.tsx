@@ -5,7 +5,10 @@ import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { Navbar } from "@/components/navbar";
 import { theme } from "@/lib/theme";
-const font = Inria_Serif({ weight: ["300", "400", "700"] , preload: false});
+import "@mantine/notifications/styles.css";
+import { cookies } from "next/headers";
+import { Notifications } from "@mantine/notifications";
+const font = Inria_Serif({ weight: ["300", "400", "700"], preload: false });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,6 +20,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookie = cookies();
+  let token = cookie.get("token");
   return (
     <html lang="en" className={font.className}>
       <head>
@@ -24,8 +29,10 @@ export default function RootLayout({
       </head>
       <body className="px-5 py-4">
         <MantineProvider theme={theme}>
-          <Navbar />
+          <Notifications />
+          <Navbar token={token?.value} />
           <div className="h-[71px]"></div>
+
           {children}
         </MantineProvider>
       </body>

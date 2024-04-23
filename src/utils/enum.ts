@@ -41,3 +41,19 @@ export enum PaymentMethodType {
     COMPANY = "COMPANY",
     PERSONAL = "PERSONAL",
 }
+
+
+
+
+
+export enum ProfileListType {
+    info = 'info',
+    payments = 'payments',
+    security = 'security',
+    membership = 'membership',
+    teams = 'teams',
+    notification = 'notification',
+    members = 'members',
+    tax = 'tax',
+    services = 'services',
+}

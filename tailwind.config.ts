@@ -19,7 +19,8 @@ const config: Config = {
       white: "#fff",
       gray: "#d9d9d9",
       brand: "#FF8600",
-      textGray: "#5e6d55",
+      // textGray: "#5e6d55",
+      textGray: "#676767",
     },
     fontSize: {
       sm: ["14px", "20px"],

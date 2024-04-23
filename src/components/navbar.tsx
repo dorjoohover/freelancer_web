@@ -3,7 +3,7 @@ import { Box, Group, Title } from "@mantine/core";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export const Navbar = () => {
+export const Navbar = ({token}: {token?: string}) => {
   const pathname = usePathname();
   const auth = pathname?.includes("login") || pathname?.includes("register");
   return (
@@ -15,7 +15,7 @@ export const Navbar = () => {
         px={"xl"}
         py={"md"}
       >
-        <Title size={"30px"} ff={"heading"} c={"white"}>
+        <Title size={"30px"} ff={"heading"} c={"brand"}>
           FreeFlex
         </Title>
 

@@ -39,7 +39,10 @@ export interface ClientInfoModel extends Document {
 
 export interface UserDto {
   _id: string;
-  username: string;
+  // username: string;
+  lastname: string;
+  email: string;
+  firstname: string;
   password: string;
   avgRating: number;
 
@@ -50,7 +53,10 @@ export interface UserDto {
 }
 
 export interface UserModel extends Document {
-  username: string;
+  // username: string;
+  lastname: string;
+  email: string;
+  firstname: string;
   password: string;
   avgRating: number;
 
@@ -63,23 +69,18 @@ const UserInfoSchema: Schema = new mongoose.Schema(
   {
     registerNumber: {
       type: String,
-      required: true,
     },
     phone: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
-      required: true,
     },
     name: {
       type: String,
-      required: true,
     },
     profession: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }
@@ -94,27 +95,36 @@ const ClientInfoSchema: Schema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
     },
     email: {
       type: String,
-      required: true,
     },
     type: {
       enum: BusinessType,
       type: String,
-      required: true,
     },
     name: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }
 );
 const UserSchema: Schema = new mongoose.Schema(
   {
-    username: {
+    // username: {
+    //   type: String,
+    //   required: true,
+    // },
+    // upwork
+    lastname: {
+      type: String,
+      required: true,
+    },
+    firstname: {
+      type: String,
+      required: true,
+    },
+    email: {
       type: String,
       required: true,
     },
