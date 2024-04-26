@@ -1,8 +1,13 @@
 import {
+  BudgetType,
   PaymentMethodType,
+  PostScopeDuration,
+  PostScopeLevel,
+  PostScopeSize,
   PostType,
   RequirementType,
   TaskType,
+  UserType,
 } from "@/utils/enum";
 import mongoose, { Document, Schema } from "mongoose";
 // task
@@ -79,6 +84,15 @@ export interface PostDto {
   professions: [string];
   type: string;
   paymentMethod: string;
+  category: string;
+  skills: [string];
+  size: PostScopeSize;
+  duration: PostScopeDuration;
+  level: PostScopeLevel;
+  budgetType: BudgetType;
+  minPrice: number;
+  maxPrice: number;
+  price: number;
 }
 
 export interface PostModel extends Document {
@@ -91,16 +105,61 @@ export interface PostModel extends Document {
   professions: [string];
   type: string;
   paymentMethod: string;
+  category: string;
+  skills: [string];
+  size: PostScopeSize;
+  duration: PostScopeDuration;
+  level: PostScopeLevel;
+  budgetType: BudgetType;
+  minPrice: number;
+  maxPrice: number;
+  price: number;
 }
 
 const PostSchema: Schema = new mongoose.Schema(
   {
+    category: {
+      type: String,
+      required: true,
+    },
+    skills: [
+      {
+        type: String,
+      },
+    ],
+
+    size: {
+      type: String,
+      enum: PostScopeSize,
+    },
+    duration: {
+      type: String,
+      enum: PostScopeDuration,
+    },
+    level: {
+      type: String,
+      enum: PostScopeLevel,
+    },
+    budgetType: {
+      type: String,
+      enum: BudgetType,
+    },
+    minPrice: {
+      type: Number,
+    },
+    maxPrice: {
+      type: Number,
+    },
+    price: {
+      type: Number,
+    },
+
     deadline: {
       type: Date,
     },
     payment: {
       type: Number,
-      required: true,
+      // required: true,
     },
     paymentMethod: {
       type: String,
@@ -115,7 +174,6 @@ const PostSchema: Schema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Review",
-        required: true,
       },
     ],
     number: {
@@ -146,7 +204,7 @@ const PostSchema: Schema = new mongoose.Schema(
     type: {
       type: String,
       required: true,
-      enum: PostType,
+      enum: UserType,
     },
   },
   { timestamps: true }

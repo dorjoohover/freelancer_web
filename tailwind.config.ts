@@ -21,6 +21,7 @@ const config: Config = {
       brand: "#FF8600",
       // textGray: "#5e6d55",
       textGray: "#676767",
+      hoverGray: '#fdfdfd'
     },
     fontSize: {
       sm: ["14px", "20px"],

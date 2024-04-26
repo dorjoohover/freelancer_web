@@ -31,3 +31,15 @@ body {
     text-wrap: balance;
   }
 }
+
+
+.mantine-Radio-description  {
+  color: #676767 !important;
+}
+
+
+.mantine-Select-wrapper {
+  border: 1px solid #676767 !important;
+  border-radius: 4px;
+  
+}

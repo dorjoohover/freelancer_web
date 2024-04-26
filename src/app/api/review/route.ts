@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
   await dbConnect();
   const token = cookies().get('token')
   try {
-    const user = await verifyUser(token.value);
+    const user = await verifyUser(token?.value ?? '');
 
     if (user) {
       const res = await Review.find();
@@ -29,8 +29,8 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     const cookie = cookies();
     const token = cookie.get("token");
-    if (token.value != "" && token.value != null) {
-      const user = await verifyUser(token.value);
+    if (token?.value != "" && token?.value != null) {
+      const user = await verifyUser(token?.value ?? '');
 
       if (user) {
         await Review.create(data);

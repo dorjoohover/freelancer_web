@@ -9,7 +9,7 @@ const auth = new google.auth.GoogleAuth({
     private_key: (process.env.GDRIVE_PRIVTKEY as string).replace(/\\n/gm, "\n"),
   },
 });
-export async function GET(request: NextRequest, { params: { id } }) {
+export async function GET(request: NextRequest, { params: { id } } : {params: {id: string}}) {
   try {
     const defaultImage = NextResponse.redirect(
       new URL("/img/logo.png", process.env.NEXT_PUBLIC_BASE_URL),
@@ -53,10 +53,10 @@ export async function GET(request: NextRequest, { params: { id } }) {
     return NextResponse.redirect(fileMeta.data.thumbnailLink);
   } catch (error) {
     const e = error;
-    console.error(e.message);
+    // console.error(e.message);
     return NextResponse.json(
       {
-        error: e.message,
+        error: `${e}`,
       },
       {
         status: 500,

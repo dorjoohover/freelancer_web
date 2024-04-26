@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
   const filename = formData.getAll("fileName");
 
   const uploadToGooglDrive = async (fileBuffer: any) => {
-    const fileMetadata = {
+    const fileMetadata: any = {
       name: filename,
       parents: ["1Wl37cdhwm-TtWc5gA6PCFbagSxmhnYOH"],
     };
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
           const fileBuffer = f.stream();
 
           const res = await uploadToGooglDrive(fileBuffer);
-          resolve(res);
+          resolve(res ?? '');
         })
       )
     );

@@ -21,11 +21,11 @@ export const Navbar = ({token}: {token?: string}) => {
 
         {!auth && (
           <Group align="center" color="white" gap={"48px"}>
-            <Link href={"/"} className="text-white">
-              Төрөл
+            <Link href={"/post"} className="text-white">
+              view post
             </Link>
-            <Link href={"/"} className="text-white">
-              Төрөл
+            <Link href={"/post/title"} className="text-white">
+              create post
             </Link>
 
             <Link href={"/login"} className="text-white">

@@ -4,3 +4,7 @@ export class RegisterMessage {
     static insert = 'оруулна уу.'
     static passwordRequirement = '6-с олон тэмдэгт'
 }
+
+export class PostMessage {
+    static needTitle = 'Need Title'
+}

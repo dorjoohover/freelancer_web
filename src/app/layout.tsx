@@ -27,7 +27,7 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
       </head>
-      <body className="px-5 py-4">
+      <body>
         <MantineProvider theme={theme}>
           <Notifications />
           <Navbar token={token?.value} />

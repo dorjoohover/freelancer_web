@@ -19,8 +19,24 @@ export class GlobalStrings {
   static password = "Нууц үг";
   static wait = "Түр хүлээнэ үү.";
   static info = "Мэдэгдэл.";
+  static title = "Title";
+  static description = "Description";
   static client = "Client";
   static phone = "Phone";
+  static back = "Back";
+  static next = "Next";
+  static from = "From";
+  static to = "To";
+  static cancel = "Cancel";
+  static save = "Save";
+  static budget = "Budget";
+  static category = "Category";
+  static scope = "Scope";
+  static skills = "Skills";
+  static hr = "hr";
+  static attachFile = "Attach file";
+  static login = "Нэвтрэх";
+  static leftChar = "characters left";
 }
 
 export class ProfileStrings {
@@ -39,4 +55,53 @@ export class ProfileStrings {
   static companyDetail = "Company details ";
   static companyContact = "Company contacts  ";
   static owner = "Owner";
+}
+
+export class PostStrings {
+  static postJob = "Post this job";
+  static jobPost = "Job post";
+  static jobDetails = "Job details";
+  static postJobTitleText = "Let's start with a strong title.";
+  static postJobTitleDescription =
+    "This helps your job post stand out to the right candidates. It’s the first thing they’ll see, so make it count!";
+  // title
+  static titleInputLabel = "Write a title for your job post ";
+  static exampleTitle = "Example titles   ";
+
+  // skill
+  static skillTitleText = "What are the main skills required for your work?";
+  static searchSkillLabel = "Search skills or add your own ";
+  static selectedSkills = "Selected skills";
+  static popularSkillFor = "Popular skills for Full Stack Development";
+  // scope
+  static scopeTitleText = "Next, estimate the scope of your work.";
+  static scopeTitleDescription =
+    "Consider the size of your project and the time it will take.";
+  // budget
+  static budgetTitleText = "Tell us about your budget.";
+  static budgetTitleDescription =
+    "This will help us match you to talent within your range.";
+  static hourlyRate = "Hourly rate ";
+  static fixedPrice = "Fixed price ";
+  static avarageRateLabel = "This is the average rate for similar projects. ";
+  static avarageRateDescription =
+    "Professionals tend to charge $15 - $35 /hour (USD) for full stack development projects like yours. Experts may charge higher rates. ";
+  static fixedPriceLabel =
+    "Set a price for the project and pay at the end, or you can divide the project into milestones and pay as each milestone is completed. ";
+  static fixedPriceQuestion =
+    "What is the best cost estimate for your project? ";
+  static fixedPriceDescription =
+    "You can negotiate this cost and create milestones when you chat with your freelancer. ";
+
+  // descrition
+  static descTitle = "Start the conversation.";
+  static descDescription = "Talent are looking for: ";
+  static descLabelTitle = "Describe what you need ";
+  static descPh = "Already have a description? Paste it here!";
+
+  static reviewJobPost = "Review Job Post";
+
+
+
+  // edit 
 }
