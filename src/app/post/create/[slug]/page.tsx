@@ -146,7 +146,7 @@ export default function PostCreateDynamicPage({
     } else {
       localStorage.setItem("postPayload", JSON.stringify(payload));
     }
-    router.push(`/post/${postNextStepString(step).url}`);
+    router.push(`/post/create/${postNextStepString(step).url}`);
   };
   const active = () => {
     switch (step) {
