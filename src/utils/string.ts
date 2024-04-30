@@ -7,6 +7,8 @@ export class AuthStrings {
   static alreadyAccount = "Бүртгэлтэй байсан?";
   static login = "Нэвтрэх";
   static register = "Бүртгүүлэх";
+  static logout = "Гарах";
+  static checkOut = "Гарахдаа итгэлтэй байна уу?";
 
   static join = "Join as a client or freelancer";
   // static joinClient = "Sign up to hire talent"
@@ -28,6 +30,7 @@ export class GlobalStrings {
   static from = "From";
   static to = "To";
   static cancel = "Cancel";
+  static correct = "Correct";
   static save = "Save";
   static budget = "Budget";
   static category = "Category";
@@ -37,6 +40,11 @@ export class GlobalStrings {
   static attachFile = "Attach file";
   static login = "Нэвтрэх";
   static leftChar = "characters left";
+  static adBy = "Ad by";
+  static contactMe = "Contact me";
+  static price = "Price";
+  static level = "Level";
+  static size = "Size";
 }
 
 export class ProfileStrings {
@@ -75,6 +83,8 @@ export class PostStrings {
   static popularSkillFor = "Popular skills for Full Stack Development";
   // scope
   static scopeTitleText = "Next, estimate the scope of your work.";
+  static startDate = "Start Date";
+  static endDate = "End Date";
   static scopeTitleDescription =
     "Consider the size of your project and the time it will take.";
   // budget

@@ -1,4 +1,3 @@
-
 import { PostStep } from "./enum";
 
 export const checkRegisterNumber = (value: string): boolean => {
@@ -107,15 +106,25 @@ export const postPrevStepString = (value: number) => {
   }
 };
 
-export const priceFormat = (value: string) => {
+export const DateFormat = (value: Date | null, symbol = "-") => {
 
+  if (value == null) return "";
+  let month = value.getMonth() + 1
+  let monthStr = month < 10 ? `0${month}` : `${month}`
+  let day = value.getDate()
+
+  let dayStr = day < 10 ? `0${day}` : `${day}`
+  return `${value.getFullYear()}${symbol}${
+    monthStr
+  }${symbol}${dayStr}`;
+};
+
+export const priceFormat = (value: string) => {
   const reversed = value
     .split("")
     .reverse()
     .join("")
     .match(/.{1,3}/g);
-
- 
 
   if (reversed != null) {
     return reversed.toString().split("").reverse().join("");

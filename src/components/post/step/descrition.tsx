@@ -1,4 +1,4 @@
-import { PostType } from "@/app/post/[slug]/page";
+import { PostType } from "@/app/post/create/[slug]/page";
 import { priceFormat } from "@/utils/function";
 import { GlobalStrings, PostStrings } from "@/utils/string";
 import { postExampleTitles } from "@/utils/values";

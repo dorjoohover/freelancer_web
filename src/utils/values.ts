@@ -101,6 +101,8 @@ export const postScopeDuration = [
     description: "",
   },
 ];
+
+
 export const postScopeLevel = [
   {
     name: "Entry ",
@@ -153,6 +155,10 @@ export const postCategories = [
   {
     id: "barilga",
     name: "Барилга",
+  },
+  {
+    id: "it",
+    name: "Мэдээллийн технологи",
   },
   {
     id: "sport&fitness",

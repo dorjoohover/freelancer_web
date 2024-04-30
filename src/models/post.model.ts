@@ -10,6 +10,7 @@ import {
   UserType,
 } from "@/utils/enum";
 import mongoose, { Document, Schema } from "mongoose";
+import { UserDto } from "./user.model";
 // task
 
 export interface TaskModel extends Document {
@@ -75,7 +76,7 @@ const RequirementSchema: Schema = new mongoose.Schema(
 
 export interface PostDto {
   _id: string;
-  created: string;
+  created: string | UserDto;
   number: number;
   requirements: [RequirementDto];
   verified: boolean;
@@ -87,7 +88,8 @@ export interface PostDto {
   category: string;
   skills: [string];
   size: PostScopeSize;
-  duration: PostScopeDuration;
+  // duration: PostScopeDuration;
+  date: [Date | null]
   level: PostScopeLevel;
   budgetType: BudgetType;
   minPrice: number;
@@ -108,7 +110,8 @@ export interface PostModel extends Document {
   category: string;
   skills: [string];
   size: PostScopeSize;
-  duration: PostScopeDuration;
+  // duration: PostScopeDuration;
+  date: [Date | null]
   level: PostScopeLevel;
   budgetType: BudgetType;
   minPrice: number;
@@ -132,10 +135,16 @@ const PostSchema: Schema = new mongoose.Schema(
       type: String,
       enum: PostScopeSize,
     },
-    duration: {
-      type: String,
-      enum: PostScopeDuration,
-    },
+    date: [
+      {
+        type: Date, 
+
+      }
+    ],
+    // duration: {
+    //   type: String,
+    //   enum: PostScopeDuration,
+    // },
     level: {
       type: String,
       enum: PostScopeLevel,

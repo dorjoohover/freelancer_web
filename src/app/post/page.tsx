@@ -1,9 +1,11 @@
 "use client";
+import { PostCard } from "@/components/post/card";
 import { GlobalStrings, PostStrings } from "@/utils/string";
 import { postExampleTitles } from "@/utils/values";
 import {
   Box,
   Button,
+  Grid,
   Group,
   List,
   rem,
@@ -20,13 +22,29 @@ export default function PostPage() {
   const [posts, setPosts] = useState([]);
   const getPosts = async () => {
     try {
-      await fetch(`/api/post/my`)
+      await fetch(`/api/post/`)
         .then((d) => d.json())
-        .then((d) => setPosts(d));
+        .then((d) => {
+          console.log(d.data)
+          setPosts(d.data)
+
+        });
     } catch (error) {}
   };
   useEffect(() => {
     getPosts();
   }, []);
-  return <Box mt={100}>{JSON.stringify(posts)}</Box>;
+  return (
+    <Box >
+      <Grid >
+        {posts?.concat(posts)?.concat(posts)?.map((post, i) => {
+          return (
+            <Grid.Col span={3} key={i}>
+              <PostCard post={post} />
+            </Grid.Col>
+          );
+        })}
+      </Grid>
+    </Box>
+  );
 }

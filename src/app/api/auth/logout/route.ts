@@ -7,9 +7,13 @@ export async function GET(request: NextRequest) {
       success: true,
     });
     response.cookies.set("token", "", { httpOnly: true, expires: new Date(0) });
+    response.cookies.delete("verified");
 
     return response;
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json(
+      { message: `${error}`, success: false },
+      { status: 500 }
+    );
   }
 }

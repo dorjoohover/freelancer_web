@@ -87,14 +87,16 @@ export const PostTitleCard = ({
           return <List.Item key={i}>{title}</List.Item>;
         })}
       </List>
-
       {category && (
         <Select
           mt={20}
           labelProps={{
             fw: 600,
           }}
-          value={cateValue}
+          value={
+            postCategories.filter((category) => category.id == cateValue)?.[0]
+              ?.name
+          }
           label={GlobalStrings.category}
           data={postCategories.map((category) => category.name)}
           onChange={(e) => {

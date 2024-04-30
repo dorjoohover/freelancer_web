@@ -21,7 +21,7 @@ import { RadioCard } from "../card";
 import { IoTimeOutline } from "react-icons/io5";
 import { GiPriceTag } from "react-icons/gi";
 import { priceFormat } from "@/utils/function";
-import { PostType } from "@/app/post/[slug]/page";
+import { PostType } from "@/app/post/create/[slug]/page";
 
 const PostBudgetStep = ({
   maxPrice,

@@ -16,7 +16,10 @@ export async function GET(req: NextRequest) {
     const user = await verifyUser(token?.value ?? "");
 
     if (user) {
-      const res = await Post.find();
+      const res = await Post.find().populate({
+        path: 'created', 
+        model: User
+      } );
       return NextResponse.json({ data: res }, { status: 200 });
     } else {
       return NextResponse.json("Нэвтрэнэ үү.", { status: 201 });

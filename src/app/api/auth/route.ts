@@ -45,14 +45,24 @@ export async function POST(req: NextRequest) {
         const token = jwt.sign(user._id.toString(), process.env.NEXT_PUBLIC_JWT_SECRET as string);
        
         cookie.set("token", token);
-        return NextResponse.json("Амжилттай", { status: 201 });
+        cookie.set("verified", user.verified);
+        return NextResponse.json({
+          success: true, 
+          message: "Амжилттай"
+        }, { status: 201 });
       } else {
-        return NextResponse.json("Нууц үг буруу байна.", {
+        return NextResponse.json({
+          success: false, 
+          message: "Нууц үг буруу байна."
+        }, {
           status: 401,
         });
       }
     } else {
-      return NextResponse.json("Бүртгэлгүй байна.", {
+      return NextResponse.json({
+        success: false, 
+        message: "Бүртгэлгүй байна."
+      }, {
         status: 401,
       });
     }

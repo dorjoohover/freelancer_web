@@ -67,6 +67,7 @@ export default function RegisterPage() {
       setLoading(true);
       const notif = notifications.show({
         loading: true,
+        bg: 'brand',
         message: GlobalStrings.wait,
         title: GlobalStrings.info,
         autoClose: false,

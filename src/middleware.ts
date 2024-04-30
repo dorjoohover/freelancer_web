@@ -5,7 +5,8 @@ import { UserType } from "./utils/enum";
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-
+  const publicViews = ["/"];
+  const view = publicViews.includes(path);
   // Define paths that are considered public (accessible without a token)
   const isPublicPath = path === "/login" || path === "/register";
 
@@ -19,12 +20,11 @@ export function middleware(request: NextRequest) {
   }
 
   // If trying to access a protected path without a token, redirect to the login page
-  //   if (!isPublicPath && !token) {
-  //     return NextResponse.redirect(new URL('/login', request.nextUrl))
-  //   }
+  if (!isPublicPath && !token && !view) {
+    return NextResponse.redirect(new URL("/login", request.nextUrl));
+  }
 
   if (path?.startsWith("/profile") && verified === "false") {
-    console.log("adsf");
     if (!path?.startsWith("/profile/verify-email")) {
       return NextResponse.redirect(
         new URL("/profile/verify-email", request.nextUrl)
@@ -40,5 +40,12 @@ export function middleware(request: NextRequest) {
 // It specifies the paths for which this middleware should be executed.
 // In this case, it's applied to '/', '/profile', '/login', and '/signup'.
 export const config = {
-  matcher: ["/", "/admin", "/login", "/register", "/profile/:path*"],
+  matcher: [
+    "/",
+    "/admin",
+    "/login",
+    "/register",
+    "/profile/:path*",
+    "/post/:path*",
+  ],
 };

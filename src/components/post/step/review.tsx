@@ -1,5 +1,5 @@
 "use client";
-import { PostType } from "@/app/post/[slug]/page";
+import { PostType } from "@/app/post/create/[slug]/page";
 import { GlobalStrings, PostStrings } from "@/utils/string";
 import {
   Box,
