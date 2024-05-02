@@ -89,12 +89,13 @@ export interface PostDto {
   skills: [string];
   size: PostScopeSize;
   // duration: PostScopeDuration;
-  date: [Date | null]
+  date: [Date | null];
   level: PostScopeLevel;
   budgetType: BudgetType;
   minPrice: number;
   maxPrice: number;
   price: number;
+  createdAt: string;
 }
 
 export interface PostModel extends Document {
@@ -111,7 +112,7 @@ export interface PostModel extends Document {
   skills: [string];
   size: PostScopeSize;
   // duration: PostScopeDuration;
-  date: [Date | null]
+  date: [Date | null];
   level: PostScopeLevel;
   budgetType: BudgetType;
   minPrice: number;
@@ -137,9 +138,8 @@ const PostSchema: Schema = new mongoose.Schema(
     },
     date: [
       {
-        type: Date, 
-
-      }
+        type: Date,
+      },
     ],
     // duration: {
     //   type: String,

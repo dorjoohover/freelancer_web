@@ -2,15 +2,16 @@
 import { PostDto } from "@/models/post.model";
 import { UserDto } from "@/models/user.model";
 import { BudgetType } from "@/utils/enum";
-import { priceFormat } from "@/utils/function";
+import { dateDif, priceFormat } from "@/utils/function";
 import { GlobalStrings, PostStrings } from "@/utils/string";
-import { skills } from "@/utils/values";
+import { reviewExample, skills } from "@/utils/values";
 import {
   Avatar,
   Box,
   Button,
   Group,
   List,
+  Rating,
   rem,
   Stack,
   Text,
@@ -35,6 +36,7 @@ export default function PostDymanicPage({
       }).then((d) => d.json());
       setData(res.data);
       console.log(res.data);
+      dateDif(res.data.createdAt);
     } catch (error) {}
   };
 
@@ -47,10 +49,19 @@ export default function PostDymanicPage({
       : `${priceFormat(`${data?.minPrice ?? 0}`)}₮ -
           ${priceFormat(`${data?.maxPrice ?? 0}`)}₮`;
   };
+  const reviews = reviewExample.map((e) => e.views).reduce((a, b) => a + b);
+  const avg =
+    reviewExample.map((e) => e.views * e.star).reduce((a, b) => a + b) /
+    reviews;
+
   return (
     <Box className="flex gap-10" maw={1200} mx={"auto"}>
       <Stack flex={5}>
         <Title>{data?.title}</Title>
+        <Text c={"labelGray"}>
+          {GlobalStrings.posted} {`${dateDif(data?.createdAt ?? "").value} `}
+          {dateDif(data?.createdAt ?? "").unit} {GlobalStrings.ago}
+        </Text>
         <Group>
           <Avatar
             src={
@@ -95,10 +106,81 @@ export default function PostDymanicPage({
             })}
           </List>
         </Box>
+        <Group>
+          <Text>
+            {reviews} {GlobalStrings.review}
+          </Text>
+          <Rating value={Math.round(avg * 100) / 100} fractions={2} readOnly />
+        </Group>
+        <Group gap={20}>
+          <List flex={1}>
+            {reviewExample.map((e, i) => {
+              return (
+                <List.Item key={i}>
+                  <Group>
+                    <Text>
+                      {e.star} {GlobalStrings.star}
+                    </Text>{" "}
+                    <Box
+                      w={200}
+                      h={5}
+                      pos={"relative"}
+                      className="rounded-lg"
+                      bg={"gray"}
+                    >
+                      <Box
+                        pos={"absolute"}
+                        className="rounded-lg"
+                        bg={"dark"}
+                        top={0}
+                        bottom={0}
+                        left={0}
+                        right={`${100 - (e.views / reviews) * 100}%`}
+                      />
+                    </Box>
+                    <Text>({priceFormat(`${e.views}`)})</Text>
+                  </Group>
+                </List.Item>
+              );
+            })}
+          </List>
+          <List flex={1}>
+            <List.Item>
+              <Text fw={600}>{GlobalStrings.ratingBreakdown}</Text>
+            </List.Item>
+            <List.Item>
+              <Group justify="space-between">
+                <Text>{GlobalStrings.sellerCommunicationLevel}</Text>
+                <Group gap={5}>
+                  <IoStar />
+                  <Text fw={600}>{Math.round(avg * 100) / 100}</Text>
+                </Group>
+              </Group>
+              <Group justify="space-between">
+                <Text>{GlobalStrings.recommendedFriends}</Text>
+                <Group gap={5}>
+                  <IoStar />
+                  <Text fw={600}>{Math.round(avg * 100) / 100}</Text>
+                </Group>
+              </Group>
+              <Group justify="space-between">
+                <Text>{GlobalStrings.serviceDescribed}</Text>
+                <Group gap={5}>
+                  <IoStar />
+                  <Text fw={600}>{Math.round(avg * 100) / 100}</Text>
+                </Group>
+              </Group>
+            </List.Item>
+          </List>
+        </Group>
       </Stack>
       <Stack flex={2} pos={"sticky"}>
-        <Link target="_blank" href={`/profile/${(data?.created as UserDto)?.email}`} className="w-full">
-          <Button w={'100%'}>{GlobalStrings.contactMe}</Button>
+        <Link
+          target="_blank"
+          href={`/profile/${(data?.created as UserDto)?.email}`}
+          className="w-full"
+        >
+          <Button w={"100%"}>{GlobalStrings.contactMe}</Button>
         </Link>
       </Stack>
     </Box>

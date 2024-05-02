@@ -1,4 +1,4 @@
-import { PostStep } from "./enum";
+import { CreateFreelancerProfileStep, PostStep } from "./enum";
 
 export const checkRegisterNumber = (value: string): boolean => {
   const re = /^[\u0430-\u044F]{2}[0-9]{8}$/;
@@ -38,6 +38,34 @@ export const postStep = (value: PostStep): number => {
       return 5;
     case PostStep.review:
       return 6;
+    default:
+      return 0;
+  }
+};
+export const profileCreateStep = (
+  value: CreateFreelancerProfileStep
+): number => {
+  switch (value) {
+    case CreateFreelancerProfileStep.resume:
+      return 0;
+    case CreateFreelancerProfileStep.title:
+      return 1;
+    case CreateFreelancerProfileStep.employment:
+      return 2;
+    case CreateFreelancerProfileStep.education:
+      return 3;
+    case CreateFreelancerProfileStep.languages:
+      return 4;
+    // case CreateFreelancerProfileStep.skill:
+    //   return 2;
+    // case CreateFreelancerProfileStep.scope:
+    //   return 3;
+    // case CreateFreelancerProfileStep.budget:
+    //   return 4;
+    // case CreateFreelancerProfileStep.description:
+    //   return 5;
+    // case CreateFreelancerProfileStep.review:
+    //   return 6;
     default:
       return 0;
   }
@@ -107,16 +135,13 @@ export const postPrevStepString = (value: number) => {
 };
 
 export const DateFormat = (value: Date | null, symbol = "-") => {
-
   if (value == null) return "";
-  let month = value.getMonth() + 1
-  let monthStr = month < 10 ? `0${month}` : `${month}`
-  let day = value.getDate()
+  let month = value.getMonth() + 1;
+  let monthStr = month < 10 ? `0${month}` : `${month}`;
+  let day = value.getDate();
 
-  let dayStr = day < 10 ? `0${day}` : `${day}`
-  return `${value.getFullYear()}${symbol}${
-    monthStr
-  }${symbol}${dayStr}`;
+  let dayStr = day < 10 ? `0${day}` : `${day}`;
+  return `${value.getFullYear()}${symbol}${monthStr}${symbol}${dayStr}`;
 };
 
 export const priceFormat = (value: string) => {
@@ -132,4 +157,46 @@ export const priceFormat = (value: string) => {
     return 0;
   }
   // return value.
+};
+
+export const dateDif = (value: string) => {
+  let now = new Date(Date.now());
+  let date = new Date(value);
+  let dif = new Date(now.getTime() - date.getTime());
+  let year = dif.getUTCFullYear() - 1970;
+  if (year > 0)
+    return {
+      unit: "years",
+      value: year,
+    };
+  let month = dif.getUTCMonth();
+  if (month > 0)
+    return {
+      unit: "months",
+      value: month,
+    };
+  let day = dif.getUTCDate();
+  if (day > 0)
+    return {
+      unit: "days",
+      value: day,
+    };
+  let hour = dif.getUTCHours();
+  if (hour > 0)
+    return {
+      unit: "hours",
+      value: hour,
+    };
+  let minutes = dif.getUTCMinutes();
+  if (minutes > 0)
+    return {
+      unit: "minutes",
+      value: minutes,
+    };
+  let second = dif.getUTCSeconds();
+
+  return {
+    unit: "second",
+    value: second,
+  };
 };

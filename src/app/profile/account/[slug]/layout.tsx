@@ -6,9 +6,6 @@ export default function ProfileDynamicLayout({
   children: ReactNode;
 }) {
   return (
-    <div className="flex max-w-[1100px] gap-20 mx-auto">
-      <ProfileSidebar />
-      {children}
-    </div>
+    <div className="flex max-w-[1100px] gap-20 mx-auto mt-10">{children}</div>
   );
 }

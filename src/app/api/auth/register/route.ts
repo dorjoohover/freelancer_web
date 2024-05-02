@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
         lastname: data.lastname,
         email: data.email.toLowerCase(),
         phone: data.phone,
+        type: data.type,
       });
 
       const token = jwt.sign(
@@ -40,6 +41,7 @@ export async function POST(req: NextRequest) {
 
       cookie.set("token", token);
       cookie.set("verified", res.verified);
+      cookie.set("type", res.type);
       return NextResponse.json(
         { message: "Амжилттай.", success: true },
         {

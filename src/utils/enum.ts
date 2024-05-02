@@ -16,6 +16,12 @@ export enum UserType {
   FREELANCER = "FREELANCER",
   ADMIN = "ADMIN",
 }
+export enum UserStatus {
+  PENDING = "PENDING",
+  BANNED = "BANNED",
+  VERIFIED = "VERIFIED",
+  CREATED = "CREATED",
+}
 
 export enum BusinessType {
   PERSON = "PERSON",
@@ -76,6 +82,14 @@ export enum PostScopeDuration {
 }
 
 export enum BudgetType {
-  hourly = 'hourly',
-  fixed = 'fixed'
+  hourly = "hourly",
+  fixed = "fixed",
+}
+
+export enum CreateFreelancerProfileStep {
+  resume = "resume",
+  title = "title",
+  employment = "employment",
+  education = "education",
+  languages = "languages",
 }

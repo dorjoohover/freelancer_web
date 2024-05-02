@@ -22,11 +22,21 @@ export class GlobalStrings {
   static wait = "Түр хүлээнэ үү.";
   static info = "Мэдэгдэл.";
   static title = "Title";
+  static company = "Company";
+  static location = "Location";
+  static present = "Present";
+  static review = "Reviews";
+  static star = "Stars";
+  static startDate = "Start Date";
+  static endDate = "End Date";
+  static year = "Year";
+  static month = "Month";
   static description = "Description";
   static client = "Client";
   static phone = "Phone";
   static back = "Back";
   static next = "Next";
+  static skip = "Skip for now";
   static from = "From";
   static to = "To";
   static cancel = "Cancel";
@@ -45,6 +55,17 @@ export class GlobalStrings {
   static price = "Price";
   static level = "Level";
   static size = "Size";
+
+  static ratingBreakdown = "Rating breakdown";
+  static sellerCommunicationLevel = "Seller communication level";
+  static recommendedFriends = "Recommend to a friend";
+  static serviceDescribed = "Service as described";
+  static posted = "Posted";
+  static ago = "ago";
+  static school = "School";
+  static degree = "Degree";
+  static study = "Field of Study";
+  static attended = "Dates Attended";
 }
 
 export class ProfileStrings {
@@ -111,7 +132,34 @@ export class PostStrings {
 
   static reviewJobPost = "Review Job Post";
 
+  // edit
+}
 
+export class CreateProfileString {
+  static linkedIn = "Import from LinkedIn";
+  static uploadResume = "Upload your resume";
+  static fillManually = "Fill out manually (15 min)";
 
-  // edit 
+  static professionalRoleLabel = "Your professional role";
+  static professionalRolePlaceholder = "Software Engineer | Javascript || iOS";
+
+  // experience
+  static addExperience = "Add Work Experience";
+  static addExp = "Add Experience";
+  static currentlyRole = "I am currently working in this role";
+  // education
+  static addEducation = "Add Education History";
+  static addEdu = "Add education";
+  // static currentlyRole = "I am currently working in this role";
+}
+
+export class Examples {
+  static experienceTitle = "Ex: Software Engineer";
+  static experienceCompany = "Ex: Microsoft";
+  static experienceLocation = "Ex: London";
+
+  static experienceSchool = "Ex: Northwestern University";
+  static experienceDegree = "Ex: Bachelors";
+  static experienceStudy = "Ex: Computer Science";
+  static experienceDescription = "Describe your studies, awards, etc.";
 }

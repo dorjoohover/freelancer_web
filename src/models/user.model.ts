@@ -1,4 +1,4 @@
-import { UserType, SocialType, BusinessType } from "@/utils/enum";
+import { UserType, SocialType, BusinessType, UserStatus } from "@/utils/enum";
 import mongoose, { Document, Schema } from "mongoose";
 
 // user info
@@ -48,8 +48,8 @@ export interface UserDto {
 
   bInfo: ClientInfoDto;
   uInfo: UserInfoDto;
-  verified: boolean;
-  type: string;
+  status: UserStatus;
+  type: UserType;
 }
 
 export interface UserModel extends Document {
@@ -62,8 +62,8 @@ export interface UserModel extends Document {
 
   bInfo: ClientInfoModel;
   uInfo: UserInfoModel;
-  verified: boolean;
-  type: string;
+  status: UserStatus;
+  type: UserType;
 }
 const UserInfoSchema: Schema = new mongoose.Schema(
   {
@@ -140,9 +140,10 @@ const UserSchema: Schema = new mongoose.Schema(
 
     bInfo: ClientInfoSchema,
     uInfo: UserInfoSchema,
-    verified: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      default: UserStatus.CREATED,
+      enum: UserStatus,
       required: true,
     },
     type: {

@@ -39,32 +39,44 @@ export async function POST(req: NextRequest) {
         user.password,
         process.env.NEXT_PUBLIC_JWT_SECRET as string
       );
-     
+
       if (data.password == decodedPassword) {
-     
-        const token = jwt.sign(user._id.toString(), process.env.NEXT_PUBLIC_JWT_SECRET as string);
-       
+        const token = jwt.sign(
+          user._id.toString(),
+          process.env.NEXT_PUBLIC_JWT_SECRET as string
+        );
+
         cookie.set("token", token);
         cookie.set("verified", user.verified);
-        return NextResponse.json({
-          success: true, 
-          message: "Амжилттай"
-        }, { status: 201 });
+        cookie.set("type", user.type);
+        return NextResponse.json(
+          {
+            success: true,
+            message: "Амжилттай",
+          },
+          { status: 201 }
+        );
       } else {
-        return NextResponse.json({
-          success: false, 
-          message: "Нууц үг буруу байна."
-        }, {
-          status: 401,
-        });
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Нууц үг буруу байна.",
+          },
+          {
+            status: 401,
+          }
+        );
       }
     } else {
-      return NextResponse.json({
-        success: false, 
-        message: "Бүртгэлгүй байна."
-      }, {
-        status: 401,
-      });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Бүртгэлгүй байна.",
+        },
+        {
+          status: 401,
+        }
+      );
     }
   } catch (error) {
     return NextResponse.json({ error: `${error}` });

@@ -65,9 +65,10 @@ export default function RegisterPage() {
   const register = async () => {
     try {
       setLoading(true);
+
       const notif = notifications.show({
         loading: true,
-        bg: 'brand',
+        bg: "brand",
         message: GlobalStrings.wait,
         title: GlobalStrings.info,
         autoClose: false,
@@ -98,7 +99,7 @@ export default function RegisterPage() {
             autoClose: 2000,
           });
           if (d.success) {
-            router.push("/");
+            // router.push("/");
           }
         });
       setLoading(false);
@@ -147,12 +148,11 @@ export default function RegisterPage() {
                 />
 
                 <PasswordInput
-                
                   visibilityToggleIcon={({ reveal }) =>
                     reveal ? (
                       <IconEyeOff
                         style={{
-                          color: '#FF8600',
+                          color: "#FF8600",
                           width: "var(--psi-icon-size)",
                           height: "var(--psi-icon-size)",
                         }}
@@ -160,7 +160,7 @@ export default function RegisterPage() {
                     ) : (
                       <IconEyeCheck
                         style={{
-                          color: '#FF8600',
+                          color: "#FF8600",
                           width: "var(--psi-icon-size)",
                           height: "var(--psi-icon-size)",
                         }}

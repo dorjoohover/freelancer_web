@@ -6,10 +6,5 @@ export default function ProfileDynamicPage({
 }: {
   params: { slug: string };
 }) {
-  switch (params.slug) {
-    case ProfileListType.info:
-      return <InfoItem />;
-    default:
-      <>asdf</>;
-  }
+  return <>{params.slug}</>;
 }
