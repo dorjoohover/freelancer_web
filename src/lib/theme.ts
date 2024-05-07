@@ -82,5 +82,6 @@ export const theme = createTheme({
     darkGray: colorsTuple("#a5a5a5"),
     textGray: colorsTuple("#9aaa97"),
     labelGray: colorsTuple("#676767"),
+    blue: colorsTuple("#3820F0"),
   },
 });

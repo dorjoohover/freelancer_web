@@ -1,3 +1,4 @@
+import { GrDeliver } from "react-icons/gr";
 import {
   CreateFreelancerProfileStep,
   PostScopeDuration,
@@ -5,7 +6,28 @@ import {
   PostScopeSize,
   ProfileListType,
 } from "./enum";
-
+import { RiComputerLine, RiRobot3Line } from "react-icons/ri";
+import { IoFastFoodOutline } from "react-icons/io5";
+import { LuBuilding2 } from "react-icons/lu";
+import { IoIosCall, IoIosFitness } from "react-icons/io";
+import {
+  MdCastForEducation,
+  MdDesignServices,
+  MdEventNote,
+  MdOutlineHealthAndSafety,
+  MdOutlineTravelExplore,
+} from "react-icons/md";
+import {
+  FaBabyCarriage,
+  FaMoneyCheck,
+  FaPenFancy,
+  FaSearch,
+  FaShopify,
+} from "react-icons/fa";
+import { FaCarRear, FaPaintbrush } from "react-icons/fa6";
+import { GoLaw } from "react-icons/go";
+import { TbBusinessplan } from "react-icons/tb";
+import { CiSignpostL1 } from "react-icons/ci";
 export const profileLinkValues = [
   {
     name: "My info",
@@ -143,90 +165,112 @@ export const postCategories = [
   {
     id: "hurgelt",
     name: "Хүргэлт",
+    icon: <GrDeliver size={"30px"} />,
   },
   {
     id: "hool",
     name: "Хоол",
+    icon: <IoFastFoodOutline size={"30px"} />,
   },
   {
     id: "uildverlel",
     name: "Үйлдвэрлэл",
+    icon: <RiRobot3Line size={"30px"} />,
   },
   {
     id: "barilga",
     name: "Барилга",
+    icon: <LuBuilding2 size={"30px"} />,
   },
   {
     id: "it",
     name: "Мэдээллийн технологи",
+    icon: <RiComputerLine size={"30px"} />,
   },
   {
     id: "sport&fitness",
-    name: "Спорт&фитнес",
+    name: "Спорт & фитнес",
+    icon: <IoIosFitness size={"30px"} />,
   },
   {
     id: "bolovsrol",
     name: "Боловсрол",
+    icon: <MdCastForEducation size={"30px"} />,
   },
   {
     id: "hudaldaa",
     name: "Худалдаа",
+    icon: <FaShopify size={"30px"} />,
   },
   {
     id: "huuhedAsrah",
     name: "Хүүхэд асрах",
+    icon: <FaBabyCarriage size={"30px"} />,
   },
   {
     id: "uilchilgee",
     name: "Үйлчилгээ",
+    icon: <MdDesignServices size={"30px"} />,
   },
   {
     id: "eruul mend",
     name: "Эрүүл мэнд",
+    icon: <MdOutlineHealthAndSafety size={"30px"} />,
   },
   {
     id: "sanhuu",
     name: "Санхүү",
+    icon: <FaMoneyCheck size={"30px"} />,
   },
   {
     id: "operator",
     name: "Оператор",
+    icon: <IoIosCall size={"30px"} />,
   },
   {
     id: "jolooch",
     name: "Жолооч",
+    icon: <FaCarRear size={"30px"} />,
   },
   {
     id: "huuli",
     name: "Хууль",
+    icon: <GoLaw size={"30px"} />,
   },
   {
     id: "sudalgaa",
     name: "Судалгаа",
+    icon: <FaSearch size={"30px"} />,
   },
   {
     id: "makeUp&beauty",
     name: "Гоо сайхан",
+    icon: <FaPaintbrush size={"30px"} />,
   },
   {
     id: "event",
     name: "Арга хэмжээ",
+    icon: <MdEventNote size={"30px"} />,
   },
   {
     id: "businessTosol",
     name: "Бизнес, төсөл",
+    icon: <TbBusinessplan size={"30px"} />,
   },
   {
     id: "marketingZar",
     name: "Маркетинг, зар",
+    icon: <CiSignpostL1 size={"30px"} />,
   },
   {
     id: "aylalJuuchlal",
     name: "Аялал жуучлал",
+    icon: <MdOutlineTravelExplore size={"30px"} />,
   },
   {
     id: "copywriter",
     name: "Бичээч",
+    icon: <FaPenFancy size={"30px"} />,
   },
 ];
 
@@ -618,3 +662,48 @@ export const futureYears = Array.from(
   { length: 100 },
   (_, i) => new Date(Date.now()).getFullYear() + 8 - i
 ).map((e) => e.toString());
+
+export const smartContract = [
+  {
+    title: "Уян хатан гэрээ",
+    text: "Ажилтан, ажил олгогч нарын харилцааг хөнгөвчлөх хурдан шуурхай, найдвартай гэрээ",
+    href: "/",
+    image:
+      "https://s3-alpha-sig.figma.com/img/2416/74b0/3a8565a117fff32d540f85148f13f014?Expires=1716163200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=O2IyfnGN3fgpMGFsJvO6RT0SJ-bIPOziL7vOxNvQ9i2PSm1fPu6jj3MsRSOFz5V7AQ9QZlqrtUAKr7EJjv5kM-~KVRgaMEsyrFl4lqk2T2h~qXI~xqz7twmAYBy3IGGdL3eyE1ZYjrvrHPBVlTm9dv-M2QOryVwWlCU9Mgsnku~8fbEkqxiR2GtkARs8i8gy~k8L9eYkBthY2pcj4NdfCJrcf5c0fsTsA8H1TNWj1bG6ZJcLw8ml4Otas-TtNZTa2ciYFbXT1U4pQ27HBfk~l8ez2Gu8jM-p0Ks3hT6cTJX9ozTNHwPlLqHUeXlg8~~BygJn8AoV9ZYqty-Pp~exHA__",
+  },
+  {
+    title: "Ажил гүйцэтгэлийн бүртгэл  ",
+    text: "Цагийн үнээр бус зөвхөн ажил даалгаварт суурилсан үнэ. Харилцан зөвшилцсөний дараа төлбөр шилжинэ.",
+    href: "/",
+    image:
+      "https://s3-alpha-sig.figma.com/img/1d79/8898/faea2cf175428cb54637f8109f9d64eb?Expires=1716163200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=emj8x~hFPyrARJMi3xEmjE7QjkawYFD0ghMC73s5~9wdp5NjTM~YyNLqAhIC868JsXLBmykG5Mwh7Q30y7UU3qf9SN~epgy2lUA~NZsmgD5CU3Xq4xsb3YOdYi8TbfP1FcwU0iPzoSGJFH6OVyt2YaWMcoQ6HahT01RzpJUBwzSZSThTdbqHJ9k0PeglWVFkEh0Q3~gvHLuNkMJkuV5H7GQFPGSoh5TBHwsvLrnkY6W-bX8Mctxf5xaEMhIXyBnFEt5EjghnmtzjO-FRBVaKU0wR3HowTIIkgLKkf8rCVWh5hzbD6EI~bD24cfEpDGRyftVpR4VL14E72xWd4yZPHA__",
+  },
+  {
+    title: "Сэтгэл ханамжтай цалин ба хурдан шуурхай төлбөр",
+    text: "Ажилтан, ажил олгогч аль ч талд хууль ёсны дагуу нэхэмжлэл үүснэ. Төлбөрийн нөхцөл таны гарт. ",
+    href: "/",
+    image:
+      "https://s3-alpha-sig.figma.com/img/4480/f3e8/3e36a422ecb8799f78a2673ccc729786?Expires=1716163200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=F4XnZEuV0NpV1wHZS6EZZMAaWPtGiLS6ak9~VaiD7pKIijStzj1f1sCbYDQ8GdEqxn1HUdlmQy9wy1Gy8Er1gW7ufVO9xqsi0fDxgwRCrudzXtdy7e3qifEWtoLQ1vsdneBsk0mJcTORrbAaThKDdcM7E4nz20Rg4KSPzch7VGH8YvryUPe8zlGLo53dUlOfYQBcLZLtBD7WcfS14kW37RMBUQBFLNfxo-9s~MKa4oMZNQMUT87MuHpOEJc-rjbU3pjlr8nxhw~EXKOcTQaqPV88sLmLVlxcA67N~MMrt4AfPbjShx1GIM8QYhZBelOSi9m70GjvyBn3l~2Tp7txgw__",
+  },
+];
+
+export const business360 = [
+  {
+    title: "Бизнес процесстоо дүн шинжилгээ хий",
+    text: "Сар бүрийн гүйцэтгэл, task бүрийн дэлгэрэнгүй дашбоард тайланг хүлээн аваарай.  ",
+    image:
+      "https://s3-alpha-sig.figma.com/img/195d/ee62/b4b966979d2c580a505e03e40ad05149?Expires=1716163200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=qODBAVnMK8~mibrYjdJzhOAs8GJZmTwSV-ULEgovm4LVoHGxyYswpR62ss1Qhi1xLSnCXaqNrXEo7lF2npBBLXbe0uCu6XdqL0bV9S4of1V2a1bd21P3Q1QBK~xqDRPnlX~a5QC22pttQR07MS0sTBPKdrzwGCjUtvoCQPNgPnCYadMqw~ZvGxKQ1t1E75up9syR~dWSPxBOrYsGpKphW6ICot5tkob5OPHflPArFQNqp4ohmgtdWX-DrAeY5u~BCl0~Eh9ZfWXsjBvLsqm5fTOHzG2Na-L8v46gwEytiNT4Ajv00ctz1XfPR95DXBQ2gXYSRKNq3ndRA-70hQejzQ__",
+  },
+  {
+    title: "Зардлаа оновчтой болго",
+    text: "Хүний нөөцийн зардлыг танаж, өөрийн салбартаа үнэ цэнийг бий болгоорой.  ",
+    image:
+      "https://s3-alpha-sig.figma.com/img/15a5/5c98/1a5236251b463dcb91a28c59f1c23755?Expires=1716163200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Cg~-quaT4XTe9vm8Fyq7jh9l8kPTjZWBbL2~M60XWw~euCDH-hhidJkUHZ4pUNwJ9Sd07cxLy2~LT74ICsuSpxXmCUk8NG4pLRG61Qiv75IWfBVJ6L1~qhBOssoCElaEDamMmaymNeeQfJuNhOKGpUDFAo0yxuNPyB~5RPG39RoEnusL8gK0AmH2YThtNR9H9HMnAVqw5~9RWrP-NErXK2MnLvCXaNcPf~mR87C2934E6q19aTtGSAdL1ftorCkhIKNj3g~UMMXr4Yn4tseJWgF46334dJy2Mg00UajZ2bmouq49RXdDVHi1QXHVIcAQdtPTr5mH72uoIszxC~OBnw__",
+  },
+  {
+    title: "Зардлаа оновчтой болго",
+    text: "Техник, технологитой ойр байж, орчин үеийн халуухан кареерын боломжуудтай нэгдээрэй. ",
+    image:
+      "https://s3-alpha-sig.figma.com/img/15a5/5c98/1a5236251b463dcb91a28c59f1c23755?Expires=1716163200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Cg~-quaT4XTe9vm8Fyq7jh9l8kPTjZWBbL2~M60XWw~euCDH-hhidJkUHZ4pUNwJ9Sd07cxLy2~LT74ICsuSpxXmCUk8NG4pLRG61Qiv75IWfBVJ6L1~qhBOssoCElaEDamMmaymNeeQfJuNhOKGpUDFAo0yxuNPyB~5RPG39RoEnusL8gK0AmH2YThtNR9H9HMnAVqw5~9RWrP-NErXK2MnLvCXaNcPf~mR87C2934E6q19aTtGSAdL1ftorCkhIKNj3g~UMMXr4Yn4tseJWgF46334dJy2Mg00UajZ2bmouq49RXdDVHi1QXHVIcAQdtPTr5mH72uoIszxC~OBnw__",
+  },
+];

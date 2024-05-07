@@ -7,9 +7,9 @@ import "@mantine/core/styles.css";
 import { Navbar } from "@/components/navbar";
 import { theme } from "@/lib/theme";
 import "@mantine/notifications/styles.css";
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 import { cookies } from "next/headers";
 import { Notifications } from "@mantine/notifications";
 import { DatesProvider } from "@mantine/dates";
@@ -36,7 +36,7 @@ export default function RootLayout({
         <MantineProvider theme={theme}>
           <Notifications />
           <Navbar token={token?.value} />
-          <div className="h-[71px]"></div>
+          <div className="h-[88px]"></div>
 
           <DatesProvider
             settings={{
