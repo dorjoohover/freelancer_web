@@ -20,7 +20,9 @@ export const PostTitleStep = ({
   onCategory,
   cateValue,
   value,
+  step,
 }: {
+  step: number;
   value: string;
   cateValue?: string;
   onChange: (e: string) => void;
@@ -29,11 +31,11 @@ export const PostTitleStep = ({
   return (
     <Box>
       <Group>
-        <Text>1/5</Text>
+        <Text>1/{step}</Text>
         <Text>{PostStrings.jobPost}</Text>
       </Group>
 
-      <Group gap={40} align="start">
+      <Box className="gap-10 flex max-[800px]:flex-col items-start">
         <Stack flex={2} mt={24}>
           <Title order={2}>{PostStrings.postJobTitleText}</Title>
           <Text>{PostStrings.postJobTitleDescription}</Text>
@@ -47,7 +49,7 @@ export const PostTitleStep = ({
             onCategory={(e) => onCategory(e)}
           />
         </Stack>
-      </Group>
+      </Box>
     </Box>
   );
 };

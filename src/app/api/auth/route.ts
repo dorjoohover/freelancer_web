@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
         );
 
         cookie.set("token", token);
-        cookie.set("verified", user.verified);
+        cookie.set("status", user.status);
         cookie.set("type", user.type);
         return NextResponse.json(
           {

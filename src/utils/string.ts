@@ -4,13 +4,14 @@ export class AuthStrings {
   static createAccount = "Бүртгэл үүсгэх";
   static joinClient = "Ажил олгогчоор нэгдэх";
   static applyFreelance = "Чөлөөт ажилтангаар хандах";
+  static registerAccount = "Бүртгэлгүй бол?";
   static alreadyAccount = "Бүртгэлтэй байсан?";
   static login = "Нэвтрэх";
   static register = "Бүртгүүлэх";
   static logout = "Гарах";
   static checkOut = "Гарахдаа итгэлтэй байна уу?";
 
-  static join = "Join as a client or freelancer";
+  static join = "Бидэнтэй нэгдээрэй";
   // static joinClient = "Sign up to hire talent"
 }
 
@@ -21,100 +22,108 @@ export class GlobalStrings {
   static password = "Нууц үг";
   static wait = "Түр хүлээнэ үү.";
   static info = "Мэдэгдэл.";
-  static title = "Title";
-  static company = "Company";
-  static location = "Location";
-  static present = "Present";
-  static review = "Reviews";
-  static star = "Stars";
-  static startDate = "Start Date";
-  static endDate = "End Date";
-  static year = "Year";
-  static month = "Month";
-  static description = "Description";
-  static client = "Client";
-  static phone = "Phone";
-  static back = "Back";
-  static next = "Next";
-  static skip = "Skip for now";
-  static from = "From";
-  static to = "To";
-  static cancel = "Cancel";
-  static correct = "Correct";
-  static save = "Save";
-  static budget = "Budget";
-  static category = "Category";
-  static scope = "Scope";
-  static skills = "Skills";
-  static hr = "hr";
-  static attachFile = "Attach file";
+  static title = "Гарчиг";
+  static company = "Байгууллагын нэр";
+  static salary = "Цалин";
+  static companyDirect = "Байгууллын салбар чиглэл";
+  static direct = "Албан тушаалын чиглэл";
+  static directLevel = "Албан тушаалын түвшин";
+  static location = "Хаяг";
+  static present = "Одоо";
+  static review = "Үнэлгээ";
+  static star = "Од";
+  static startDate = "Эхлэх огноо";
+  static endDate = "Төгсөх огноо";
+  static year = "Жил";
+  static month = "Сар";
+  static description = "Дэлгэрэнгүй";
+  static client = "Ажил олгогч";
+  static phone = "Утас";
+  static back = "Буцах";
+  static next = "Үргэлжлүүлэх";
+  static skip = "Алгасах";
+  static from = "Эхлэх";
+  static to = "Дуусах";
+  static cancel = "Цуцлах";
+  static correct = "Зөвшөөрөх";
+  static save = "Хадгалах";
+  static budget = "Төсөв";
+  static category = "Ангилал";
+  static scope = "Хамрах хүрээ";
+  static skills = "Ур чадварууд";
+  static hr = "ц";
+  static attachFile = "Файл оруулах";
   static login = "Нэвтрэх";
-  static leftChar = "characters left";
-  static adBy = "Ad by";
-  static contactMe = "Contact me";
-  static price = "Price";
-  static level = "Level";
-  static size = "Size";
+  static leftChar = "үлдсэн тэмдэгт";
+  static adBy = "Үүсгэгч";
+  static contactMe = "Холбогдох";
+  static price = "Үнэ";
+  static level = "Түвшин";
+  static size = "Хэмжээ";
 
-  static ratingBreakdown = "Rating breakdown";
-  static sellerCommunicationLevel = "Seller communication level";
-  static recommendedFriends = "Recommend to a friend";
-  static serviceDescribed = "Service as described";
-  static posted = "Posted";
-  static ago = "ago";
-  static school = "School";
-  static degree = "Degree";
-  static study = "Field of Study";
-  static attended = "Dates Attended";
+  static ratingBreakdown = "Үнэлгээний задаргаа";
+  static sellerCommunicationLevel = "Харилцааны түвшин";
+  static recommendedFriends = "Санал болгох";
+  static serviceDescribed = "Тодорхойлсон үйлчилгээ";
+  static posted = "Үүсгэсэн";
+  static ago = "өмнө";
+  static school = "Сургуулийн нэр";
+  static degree = "Боловсролын зэрэг";
+  static region = "Улс";
+  static study = "Эзэмшсэн мэргэжил";
+  static gpa = "Голч дүн (GPA)";
+  static attended = "Оролцсон огноо";
 }
 
 export class ProfileStrings {
-  static emailVerify = "Please verify your email";
-  static weSentEmail = "We sent an email to: ";
-  static verifyDescription =
-    "To verify, please check your inbox and follow the links. For your safety, we may also need to verify your phone number. ";
-  static sendAgain = "Send again";
-  static goToGmail = "Go to Gmail Inbox";
-  static receiveEmail = "Didn't receive email? ";
-  static profile = "Settings";
+  static emailVerify = "Цахим хаягаа баталгаажуулна уу";
+  static weSentEmail = "Цахим хаяг руу тань шуудан илгээсэн ";
+  static verifyDescription = "";
+  static sendAgain = "Дахин илгээх";
+  static goToGmail = "Gmal-руу зочлох";
+  static receiveEmail = "Имэйл хүлээж аваагүй юу?";
+  static profile = "Тохиргоо";
   // info
-  static info = "My Info";
-  static thisIsClient = "This is a client account ";
-  static account = "Account";
-  static companyDetail = "Company details ";
-  static companyContact = "Company contacts  ";
-  static owner = "Owner";
+  static info = "Миний мэдээлэл";
+  static thisIsClient = "Ажил олгогчийн хаяг";
+  static account = "Хаяг";
+  static companyDetail = "Байгууллагын дэлгэрэнгүй";
+  static companyContact = "Байгууллагатай холбогдох";
+  static owner = "Эзэмшигч";
 }
 
 export class PostStrings {
-  static postJob = "Post this job";
-  static jobPost = "Job post";
-  static jobDetails = "Job details";
-  static postJobTitleText = "Let's start with a strong title.";
+  static postJob = "Ажлыг үүсгэх";
+  static jobPost = "Ажил үүсгэх";
+  static jobDetails = "Ажлын дэлгэрэнгүй";
+  static postJobTitleText = "Үр дүнтэй гарчиг бичээрэй.";
   static postJobTitleDescription =
-    "This helps your job post stand out to the right candidates. It’s the first thing they’ll see, so make it count!";
+    "Энэ нь танд оновчтой ажилтан олоход тусална.";
   // title
-  static titleInputLabel = "Write a title for your job post ";
-  static exampleTitle = "Example titles   ";
+  static titleInputLabel = "Ажлын гарчигаа бичнэ үү";
+  static exampleTitle = "Жишээ гарчиг:";
 
   // skill
-  static skillTitleText = "What are the main skills required for your work?";
-  static searchSkillLabel = "Search skills or add your own ";
-  static selectedSkills = "Selected skills";
+  static skillTitleText = "Таны ажилд шаардлагатай ур чадварууд";
+  static searchSkillLabel = "Ур чадваруудаа хайна уу";
+  static selectedSkills = "Сонгогдсон ур чадварууд";
   static popularSkillFor = "Popular skills for Full Stack Development";
   // scope
-  static scopeTitleText = "Next, estimate the scope of your work.";
-  static startDate = "Start Date";
-  static endDate = "End Date";
+  static scopeTitleText = "Дараа нь ажлын цар хүрээгээ тодорхойлох";
+  static startDate = "Эхлэх огноо";
+  static endDate = "Төгсөх огноо";
   static scopeTitleDescription =
-    "Consider the size of your project and the time it will take.";
+    "Төслийн хэмжээ, үүнд шаардагдах хугацааг анхаарч үзээрэй.";
   // budget
-  static budgetTitleText = "Tell us about your budget.";
+  static budgetTitleText = "Та боломжит төсвөө оруулна уу";
   static budgetTitleDescription =
-    "This will help us match you to talent within your range.";
-  static hourlyRate = "Hourly rate ";
-  static fixedPrice = "Fixed price ";
-  static avarageRateLabel = "This is the average rate for similar projects. ";
+    "Энэ нь таныг өөрийн хүрээн дэх авьяастай тааруулахад тусална.";
+  static hourlyRate = "Цагаар";
+  static basicPrice = "Энгийн";
+  static standart = "Стандарт";
+  static premium = "Онцгой";
+  static fixedPrice = "Тогтсон";
+  static avarageRateLabel = "Энэ нь ижил төстэй төслүүдийн дундаж ханш юм. ";
   static avarageRateDescription =
     "Professionals tend to charge $15 - $35 /hour (USD) for full stack development projects like yours. Experts may charge higher rates. ";
   static fixedPriceLabel =
@@ -125,12 +134,12 @@ export class PostStrings {
     "You can negotiate this cost and create milestones when you chat with your freelancer. ";
 
   // descrition
-  static descTitle = "Start the conversation.";
-  static descDescription = "Talent are looking for: ";
-  static descLabelTitle = "Describe what you need ";
-  static descPh = "Already have a description? Paste it here!";
+  static descTitle = "Харилцаагаа эхлүүл.";
+  static descDescription = "Авьяаслаг хүмүүсийг хайж байна: ";
+  static descLabelTitle = "Танд хэрэгтэй зүйлээ тайлбарла";
+  static descPh = "Тодорхойлолт байгаа юу? Энд буулгана уу!";
 
-  static reviewJobPost = "Review Job Post";
+  static reviewJobPost = "Ажлын байрыг хянан үзэх";
 
   // edit
 }
@@ -144,12 +153,12 @@ export class CreateProfileString {
   static professionalRolePlaceholder = "Software Engineer | Javascript || iOS";
 
   // experience
-  static addExperience = "Add Work Experience";
-  static addExp = "Add Experience";
-  static currentlyRole = "I am currently working in this role";
+  static addExperience = "Ажлын туршлага нэмэх";
+  static addExp = "AАжлын туршлага ";
+  static currentlyRole = "Ажиллаж байгаа";
   // education
-  static addEducation = "Add Education History";
-  static addEdu = "Add education";
+  static addEducation = "Боловсролын түүхийг нэмнэ үү";
+  static addEdu = "Боловсролын түүх";
   // static currentlyRole = "I am currently working in this role";
 }
 

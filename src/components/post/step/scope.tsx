@@ -32,18 +32,20 @@ import { GoPencil } from "react-icons/go";
 export const PostScopeStep = ({
   payload,
   setPayload,
+  step,
 }: {
+  step: number;
   payload: PostType;
   setPayload: React.Dispatch<React.SetStateAction<PostType>>;
 }) => {
   return (
     <Box>
       <Group>
-        <Text>3/5</Text>
+        <Text>3/{step}</Text>
         <Text>{PostStrings.jobPost}</Text>
       </Group>
 
-      <Group gap={40} align="start">
+      <Box className="gap-10 flex max-[800px]:flex-col items-start">
         <Stack flex={2} mt={24}>
           <Title order={2}>{PostStrings.scopeTitleText}</Title>
           <Text>{PostStrings.scopeTitleDescription}</Text>
@@ -60,7 +62,7 @@ export const PostScopeStep = ({
             payload={payload}
           />
         </Stack>
-      </Group>
+      </Box>
     </Box>
   );
 };
@@ -115,14 +117,15 @@ export const PostScopeCard = ({
             value={payload.level}
           />
         )}
- 
+
         {payload.level != undefined && (
           <ScopeCard
             list={[]}
             question={ScopeQuestions.duration}
             name={"Date"}
-            description={`${DateFormat(payload.date[0], '/')} - ${DateFormat(
-              payload.date[1], '/'
+            description={`${DateFormat(payload.date[0], "/")} - ${DateFormat(
+              payload.date[1],
+              "/"
             )}`}
             active={
               payload?.durationActive == undefined || payload?.durationActive

@@ -91,13 +91,45 @@ export interface PostDto {
   // duration: PostScopeDuration;
   date: [Date | null];
   level: PostScopeLevel;
-  budgetType: BudgetType;
-  minPrice: number;
-  maxPrice: number;
-  price: number;
+  why: string;
+  gig: string;
+
+  prices: [
+    {
+      minPrice: number;
+      maxPrice: number;
+      price: number;
+      budgetType: BudgetType;
+    }
+  ];
   createdAt: string;
 }
 
+export interface PostModelDto {
+  created: string;
+  number: number;
+  requirements: [RequirementDto];
+  verified: boolean;
+  title: string;
+  description: string;
+  professions: [string];
+  type: string;
+  paymentMethod: string;
+  category: string;
+  skills: [string];
+  size: PostScopeSize;
+  // duration: PostScopeDuration;
+  date: [Date | null];
+  level: PostScopeLevel;
+  prices: [
+    {
+      minPrice: number;
+      maxPrice: number;
+      price: number;
+      budgetType: BudgetType;
+    }
+  ];
+}
 export interface PostModel extends Document {
   created: string;
   number: number;
@@ -114,10 +146,14 @@ export interface PostModel extends Document {
   // duration: PostScopeDuration;
   date: [Date | null];
   level: PostScopeLevel;
-  budgetType: BudgetType;
-  minPrice: number;
-  maxPrice: number;
-  price: number;
+  prices: [
+    {
+      minPrice: number;
+      maxPrice: number;
+      price: number;
+      budgetType: BudgetType;
+    }
+  ];
 }
 
 const PostSchema: Schema = new mongoose.Schema(
@@ -149,18 +185,21 @@ const PostSchema: Schema = new mongoose.Schema(
       type: String,
       enum: PostScopeLevel,
     },
-    budgetType: {
+    why: {
       type: String,
-      enum: BudgetType,
     },
-    minPrice: {
-      type: Number,
+    gig: {
+      type: String,
     },
-    maxPrice: {
-      type: Number,
-    },
-    price: {
-      type: Number,
+    prices: {
+      type: [
+        {
+          minPrice: { type: Number },
+          maxPrice: { type: Number },
+          price: { type: Number },
+          budgetType: { type: String },
+        },
+      ],
     },
 
     deadline: {

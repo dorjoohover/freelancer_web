@@ -99,7 +99,7 @@ export default function RegisterPage() {
             autoClose: 2000,
           });
           if (d.success) {
-            // router.push("/");
+            router.push("/");
           }
         });
       setLoading(false);
@@ -124,7 +124,7 @@ export default function RegisterPage() {
               className="gap-5"
             >
               <Stack gap={20}>
-                <Group>
+                <Box className="flex gap-4 max-[600px]:flex-col">
                   <TextInput
                     flex={1}
                     label={GlobalStrings.lastname}
@@ -141,7 +141,7 @@ export default function RegisterPage() {
                     label={GlobalStrings.firstname}
                     {...payload.getInputProps("firstname")}
                   />
-                </Group>
+                </Box>
                 <TextInput
                   label={GlobalStrings.email}
                   {...payload.getInputProps("email")}
@@ -172,9 +172,10 @@ export default function RegisterPage() {
                   {...payload.getInputProps("password")}
                 />
 
-                <Box mx={"auto"}>
+                <Box mx={"auto"} w={{ xl: "auto", base: "100%" }}>
                   {" "}
                   <Button
+                    w={{ xl: "auto", base: "100%" }}
                     disabled={loading}
                     pr={30}
                     pl={loading ? 15 : 30}
@@ -197,7 +198,10 @@ export default function RegisterPage() {
             <Title my={24} pb={8} ta={"center"}>
               {AuthStrings.join}
             </Title>
-            <Group gap={32} mb={16} justify="space-between">
+            <Box
+              mb={16}
+              className="flex justify-between gap-8 max-[600px]:flex-col"
+            >
               <RegisterCard
                 active={type == UserType.CLIENT}
                 Icon={MdOutlineBusinessCenter}
@@ -214,10 +218,11 @@ export default function RegisterPage() {
                 }}
                 text={AuthStrings.registerFreelancer}
               />
-            </Group>
+            </Box>
             <Button
               my={20}
               mx={"auto"}
+              w={{ xl: "auto", base: "100%" }}
               bg={type == undefined ? "gray" : "brand"}
               c={type == undefined ? "textGray" : "white"}
               disabled={type == undefined}

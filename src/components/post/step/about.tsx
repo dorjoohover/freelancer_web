@@ -21,23 +21,23 @@ import { IconCircleCheck } from "@tabler/icons-react";
 import { useState } from "react";
 import { IoIosAttach } from "react-icons/io";
 
-export const PostDescriptionStep = ({
+export const PostAboutStep = ({
   change,
-  description,
+  gig,
+  why,
   file,
   step,
 }: {
   step: number;
-  description: string;
+  gig: string;
+  why: string;
   change: (e: string | File, type: keyof PostType) => void;
-  file: any;
+  file?: any;
 }) => {
   return (
     <Box>
       <Group>
-        <Text>
-          {step}/{step}
-        </Text>
+        <Text>2/{step}</Text>
         <Text>{PostStrings.jobPost}</Text>
       </Group>
 
@@ -49,12 +49,24 @@ export const PostDescriptionStep = ({
 
         <Stack
           flex={3}
-          w={"100%"}
           style={{
             width: "100% !important",
           }}
         >
-          <PostDescriptionCard change={change} description={description} />
+          <PostDescriptionCard
+            change={change}
+            description={gig}
+            label="Why gig?"
+            ph=""
+            k="gig"
+          />
+          <PostDescriptionCard
+            change={change}
+            k="why"
+            description={why}
+            label="Why me?"
+            ph=""
+          />
         </Stack>
       </Box>
     </Box>
@@ -64,49 +76,36 @@ export const PostDescriptionStep = ({
 export const PostDescriptionCard = ({
   description,
   change,
+  label,
+  ph,
+  k,
 }: {
+  label?: string;
+  ph?: string;
   description: string;
+  k: keyof PostType;
   change: (e: string, key: keyof PostType) => void;
 }) => {
   return (
-    <Box>
-      <Box>
+    <Box className="w-full">
+      <Box className="w-full">
         <Textarea
+          w={"100%"}
           value={description}
-          placeholder={PostStrings.descPh}
+          placeholder={ph ?? PostStrings.descPh}
           withAsterisk
           maxLength={5000}
           onChange={(event) => {
-            change(event.currentTarget.value, "description");
+            change(event.currentTarget.value, k);
           }}
           rows={6}
           h={"auto"}
-          label={PostStrings.descLabelTitle}
+          label={label ?? PostStrings.descLabelTitle}
         />
         <Text size="12px" mt={8} ta={"right"}>
           {priceFormat(`${5000 - (description?.length ?? 0)}`)}{" "}
           {GlobalStrings.leftChar}
         </Text>
-      </Box>
-
-      <Box>
-        <FileButton
-          onChange={(e) => console.log(e)}
-          accept="application/pdf"
-          multiple
-        >
-          {(props) => (
-            <Button
-              variant="light"
-              color="brand"
-              radius={"lg"}
-              leftSection={<IoIosAttach size={20} />}
-              {...props}
-            >
-              {GlobalStrings.attachFile}
-            </Button>
-          )}
-        </FileButton>
       </Box>
     </Box>
   );

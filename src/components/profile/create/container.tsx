@@ -30,9 +30,9 @@ export const CreateFreelancerProfileContainer = ({
 }) => {
   return (
     <Box>
-      <Box className="max-w-[1100px]  gap-20 mx-auto" h={"calc(100vh - 111px)"}>
+      <Box className="max-w-[1100px]  gap-20 mx-auto" h={"calc(100vh - 130px)"}>
         <Group>
-          <Text>{step}/10</Text>
+          <Text>{step}/5</Text>
           <Text>{name}</Text>
           {step == 1 && (
             <Group gap={10}>
@@ -44,11 +44,11 @@ export const CreateFreelancerProfileContainer = ({
         <Stack mt={24}>
           <Title order={2}>{title}</Title>
           <Text>{description}</Text>
-          <Group gap={40}>
+          <Box className="flex gap-8 max-[600px]:flex-col">
             <Stack flex={3}>{children}</Stack>
             <Box flex={1} />
             <Stack flex={2}>{side}</Stack>
-          </Group>
+          </Box>
         </Stack>
       </Box>
       <Box pos={"absolute"} bottom={16} left={16} right={16}>
@@ -60,7 +60,7 @@ export const CreateFreelancerProfileContainer = ({
             bottom={0}
             bg={"brand"}
             className="rounded-lg transition-all"
-            right={`${100 - (100 / 10) * step}%`}
+            right={`${100 - (100 / 5) * step}%`}
           />
         </Box>
         <Box h={16} />
@@ -75,7 +75,7 @@ export const CreateFreelancerProfileContainer = ({
             {GlobalStrings.back}
           </Button>
 
-          {nextString != undefined && (
+          {(nextString != undefined || step == 5) && (
             <Group justify="end">
               {skip != undefined && (
                 <Button
@@ -93,7 +93,9 @@ export const CreateFreelancerProfileContainer = ({
                 disabled={!active}
                 onClick={next}
               >
-                {GlobalStrings.next}, {nextString}
+                {step == 5
+                  ? "Илгээх"
+                  : `${GlobalStrings.next + " " + nextString}`}
               </Button>
             </Group>
           )}

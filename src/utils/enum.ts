@@ -61,6 +61,7 @@ export enum PostStep {
   skill = "skill",
   title = "title",
   scope = "scope",
+  about = "about",
   budget = "budget",
   description = "description",
   review = "review",
@@ -84,6 +85,9 @@ export enum PostScopeDuration {
 export enum BudgetType {
   hourly = "hourly",
   fixed = "fixed",
+  standard = "standard",
+  basic = "basic",
+  premium = "premium",
 }
 
 export enum CreateFreelancerProfileStep {
@@ -92,4 +96,5 @@ export enum CreateFreelancerProfileStep {
   employment = "employment",
   education = "education",
   languages = "languages",
+  success = "success",
 }

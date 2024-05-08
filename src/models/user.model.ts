@@ -1,20 +1,35 @@
+import { FreelancerEducationType } from "@/components/profile/create/education";
+import { FreelancerExperienceType } from "@/components/profile/create/experience";
 import { UserType, SocialType, BusinessType, UserStatus } from "@/utils/enum";
 import mongoose, { Document, Schema } from "mongoose";
 
 // user info
 export interface UserInfoDto {
-  registerNumber?: string;
-  phone: string;
-  email: string;
-  name: string;
-  profession: string;
+  role: string[];
+  experiences: FreelancerExperienceType[];
+  educations: FreelancerEducationType[];
+  languages: {
+    language: string;
+    level: string;
+  }[];
 }
 export interface UserInfoModel extends Document {
-  registerNumber?: string;
-  phone?: string;
-  email?: string;
-  name?: string;
-  profession?: string;
+  role: string[];
+  experiences: FreelancerExperienceType[];
+  educations: FreelancerEducationType[];
+  languages: {
+    language: string;
+    level: string;
+  }[];
+}
+export interface UserInfoModel extends Document {
+  role: string[];
+  experiences: FreelancerExperienceType[];
+  educations: FreelancerEducationType[];
+  languages: {
+    language: string;
+    level: string;
+  }[];
 }
 
 // business info
@@ -65,50 +80,31 @@ export interface UserModel extends Document {
   status: UserStatus;
   type: UserType;
 }
-const UserInfoSchema: Schema = new mongoose.Schema(
-  {
-    registerNumber: {
-      type: String,
-    },
-    phone: {
-      type: String,
-    },
-    email: {
-      type: String,
-    },
-    name: {
-      type: String,
-    },
-    profession: {
-      type: String,
-    },
-  },
-  { timestamps: true }
-);
-const ClientInfoSchema: Schema = new mongoose.Schema(
-  {
-    registerNumber: {
-      type: String,
-    },
-    companyRegisterNumber: {
-      type: String,
-    },
-    phone: {
-      type: String,
-    },
-    email: {
-      type: String,
-    },
-    type: {
-      enum: BusinessType,
-      type: String,
-    },
-    name: {
-      type: String,
-    },
-  },
-  { timestamps: true }
-);
+
+// const ClientInfoSchema: Schema = new mongoose.Schema(
+//   {
+//     registerNumber: {
+//       type: String,
+//     },
+//     companyRegisterNumber: {
+//       type: String,
+//     },
+//     phone: {
+//       type: String,
+//     },
+//     email: {
+//       type: String,
+//     },
+//     type: {
+//       enum: BusinessType,
+//       type: String,
+//     },
+//     name: {
+//       type: String,
+//     },
+//   },
+//   { timestamps: true }
+// );
 const UserSchema: Schema = new mongoose.Schema(
   {
     // username: {
@@ -138,8 +134,59 @@ const UserSchema: Schema = new mongoose.Schema(
       default: 2,
     },
 
-    bInfo: ClientInfoSchema,
-    uInfo: UserInfoSchema,
+    // bInfo: ClientInfoSchema,
+    uInfo: {
+      role: { type: [String], trim: true },
+      experiences: {
+        type: [
+          {
+            title: { type: String },
+            company: { type: String },
+            level: { type: String },
+            companyDirect: { type: String },
+            profession: { type: String },
+            currentWorking: { type: Boolean },
+            startDate: { type: Date },
+            endDate: { type: Date },
+            description: { type: String },
+            startYear: { type: Number },
+            startMonth: { type: String },
+            endYear: { type: Number },
+            endMonth: { type: String },
+            salary: { type: Number },
+          },
+        ],
+      },
+
+      educations: {
+        type: [
+          {
+            school: { type: String },
+            degree: { type: String },
+            region: { type: String },
+            gpa: { type: String },
+            study: { type: String },
+            currentWorking: { type: Boolean },
+            startDate: { type: Date },
+            endDate: { type: Date },
+            description: { type: String },
+            startYear: { type: Number },
+            startMonth: { type: String },
+            endYear: { type: Number },
+            endMonth: { type: String },
+            salary: { type: Number },
+          },
+        ],
+      },
+      languages: {
+        type: [
+          {
+            language: { type: String },
+            level: { type: String },
+          },
+        ],
+      },
+    },
     status: {
       type: String,
       default: UserStatus.CREATED,

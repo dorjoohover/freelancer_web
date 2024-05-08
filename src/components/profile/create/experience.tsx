@@ -2,7 +2,14 @@ import { Label } from "@/components/label";
 import { checkName } from "@/utils/function";
 import { RegisterMessage } from "@/utils/message";
 import { CreateProfileString, Examples, GlobalStrings } from "@/utils/string";
-import { months, regions, years } from "@/utils/values";
+import {
+  interestingDirection,
+  months,
+  postCategories,
+  professionLevel,
+  regions,
+  years,
+} from "@/utils/values";
 import {
   Box,
   Button,
@@ -18,7 +25,9 @@ import { useForm } from "@mantine/form";
 export type FreelancerExperienceType = {
   title: string;
   company: string;
-  location: string;
+  level: string;
+  companyDirect: string;
+  profession: string;
   currentWorking: boolean;
   startDate: Date | null;
   endDate?: Date;
@@ -27,7 +36,7 @@ export type FreelancerExperienceType = {
   startMonth?: string;
   endYear?: number;
   endMonth?: string;
-  region: { name: string; code: string };
+  salary: number;
 };
 
 export const FreelancerCreateProfileExperience = ({
@@ -40,18 +49,16 @@ export const FreelancerCreateProfileExperience = ({
   const payload = useForm<FreelancerExperienceType>({
     initialValues: {
       title: "",
+      level: "",
+      companyDirect: "",
       company: "",
+      profession: "",
       currentWorking: false,
       description: "",
-      location: "",
       startDate: null,
-      region: { name: "Mongolia", code: "MN" },
+      salary: 0,
     },
     validate: {
-      title: (value) =>
-        checkName(value)
-          ? null
-          : `${GlobalStrings.title} ${RegisterMessage.insert}`,
       company: (value) =>
         checkName(value)
           ? null
@@ -80,48 +87,27 @@ export const FreelancerCreateProfileExperience = ({
       className="flex flex-col gap-4"
     >
       <TextInput
-        label={GlobalStrings.title}
-        radius={"md"}
-        placeholder={Examples.experienceTitle}
-        withAsterisk
-        {...payload.getInputProps("title")}
-      />
-      <TextInput
         label={GlobalStrings.company}
         radius={"md"}
         placeholder={Examples.experienceCompany}
         withAsterisk
         {...payload.getInputProps("company")}
       />
-      <Group justify="space-between" gap={20}>
-        <TextInput
-          radius={"md"}
-          flex={1}
-          label={GlobalStrings.location}
-          placeholder={Examples.experienceLocation}
-          withAsterisk
-          {...payload.getInputProps("location")}
-        />
-        <Select
-          radius={"md"}
-          flex={1}
-          mt={24}
-          value={payload.values.region?.name}
-          searchable
-          checkIconPosition="right"
-          onChange={(e) => {
-            if (e != null) {
-              let region = regions.filter((region) => region.name == e)[0];
-
-              payload.setValues((prev) => ({
-                ...prev,
-                region: region,
-              }));
-            }
-          }}
-          data={regions.map((r) => r.name)}
-        />
-      </Group>
+      <Select
+        label={GlobalStrings.companyDirect}
+        data={postCategories.map((i) => i.name)}
+        {...payload.getInputProps("companyDirect")}
+      />
+      <Select
+        label={GlobalStrings.directLevel}
+        data={professionLevel.map((i) => i.value)}
+        {...payload.getInputProps("level")}
+      />
+      <Select
+        label={GlobalStrings.direct}
+        data={interestingDirection.map((i) => i.value)}
+        {...payload.getInputProps("profession")}
+      />
       <Checkbox
         color="brand"
         checked={payload.values.currentWorking}
@@ -133,7 +119,6 @@ export const FreelancerCreateProfileExperience = ({
         }}
         label={CreateProfileString.currentlyRole}
       />
-
       <Group gap={10}>
         <Box flex={1}>
           <Label text={GlobalStrings.startDate} />
@@ -257,6 +242,24 @@ export const FreelancerCreateProfileExperience = ({
           </Box>
         </Group>
       </Group>
+
+      <TextInput
+        label={GlobalStrings.salary}
+        radius={"md"}
+        rightSection={<>₮</>}
+        withAsterisk
+        value={payload.values.salary}
+        onChange={(e) => {
+          let value = 0;
+          if (e.target.value != null) {
+            value = isNaN(parseInt(e.target.value))
+              ? 0
+              : parseInt(e.target.value);
+          }
+          payload.setValues((prev) => ({ ...prev, salary: value }));
+        }}
+      />
+
       <Textarea
         label={GlobalStrings.description}
         rows={6}

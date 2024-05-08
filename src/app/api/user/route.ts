@@ -9,18 +9,20 @@ import { verifyUser } from "../auth/verifyUser";
 
 export async function GET(req: NextRequest) {
   await dbConnect();
-  const token = cookies().get('token')
+  const token = cookies().get("token");
   try {
-    const user = await verifyUser(token?.value ?? '');
+    const user = await verifyUser(token?.value ?? "", true);
 
     if (user) {
-      const res = await User.find();
-      return NextResponse.json({data: res}, { status: 200 });
+      return NextResponse.json({ data: user, success: true }, { status: 200 });
     } else {
-      return NextResponse.json("Нэвтрэнэ үү.", { status: 201 });
+      return NextResponse.json(
+        { message: "Нэвтрэнэ үү.", success: false },
+        { status: 201 }
+      );
     }
   } catch (error) {
-    return NextResponse.json({ error: `${error}` });
+    return NextResponse.json({ error: `${error}`, success: false });
   }
 }
 export async function POST(req: NextRequest) {
@@ -30,7 +32,7 @@ export async function POST(req: NextRequest) {
     const cookie = cookies();
     const token = cookie.get("token");
     if (token?.value != "" && token?.value != null) {
-      const user = await verifyUser(token?.value ?? '');
+      const user = await verifyUser(token?.value ?? "");
 
       if (user) {
         await User.create(data);

@@ -1,5 +1,5 @@
 "use client";
-import { BudgetType } from "@/utils/enum";
+import { BudgetType, UserType } from "@/utils/enum";
 import { GlobalStrings, PostStrings } from "@/utils/string";
 import { postExampleTitles } from "@/utils/values";
 import {
@@ -24,26 +24,41 @@ import { priceFormat } from "@/utils/function";
 import { PostType } from "@/app/post/create/[slug]/page";
 
 const PostBudgetStep = ({
-  maxPrice,
-  minPrice,
-  price,
-  type,
+  userType,
   change,
+  prices,
+  current,
+  setCurrent,
 }: {
-  minPrice: number;
-  maxPrice: number;
-  price: number;
-  type: BudgetType;
-  change: (e: string, key: keyof PostType) => void;
+  setCurrent: (e: BudgetType) => void;
+  userType: UserType;
+  current: BudgetType;
+  prices: {
+    minPrice: number;
+    maxPrice: number;
+    price: number;
+    budgetType: BudgetType;
+  }[];
+  change: (
+    e: string,
+    key: keyof {
+      minPrice: number;
+      maxPrice: number;
+      price: number;
+    }
+  ) => void;
 }) => {
+  let fl = userType == UserType.FREELANCER;
   return (
     <Box>
       <Group>
-        <Text>4/5</Text>
+        <Text>
+          {userType == UserType.CLIENT ? 4 : 3}/
+          {userType == UserType.CLIENT ? 5 : 4}
+        </Text>
         <Text>{PostStrings.jobPost}</Text>
       </Group>
-
-      <Group align="start">
+      <Box className="gap-10 flex max-[800px]:flex-col items-start">
         <Stack flex={2} mt={24}>
           <Title order={2}>{PostStrings.budgetTitleText}</Title>
           <Text>{PostStrings.budgetTitleDescription}</Text>
@@ -51,49 +66,85 @@ const PostBudgetStep = ({
         <Box flex={1} />
         <Stack flex={3}>
           <PostBudgetCard
-            type={type}
+            fl={fl}
+            setCurrent={setCurrent}
+            prices={
+              prices.filter((p) => p.budgetType == current)?.[0] ?? prices[0]
+            }
             change={(e, key) => {
               change(e, key);
             }}
-            maxPrice={maxPrice}
-            minPrice={minPrice}
-            price={price}
           />
         </Stack>
-      </Group>
+      </Box>
     </Box>
   );
 };
 
 export const PostBudgetCard = ({
-  type,
   change,
-  minPrice,
-  maxPrice,
-  price,
+  prices,
+  fl,
+  setCurrent,
 }: {
-  type: BudgetType;
-  price?: number;
-  minPrice?: number;
-  maxPrice?: number;
-  change: (e: string, key: keyof PostType) => void;
+  setCurrent: (e: BudgetType) => void;
+  fl: boolean;
+  prices: {
+    minPrice: number;
+    maxPrice: number;
+    price: number;
+    budgetType: BudgetType;
+  };
+  change: (
+    e: string,
+    key: keyof {
+      minPrice: number;
+      maxPrice: number;
+      price: number;
+    }
+  ) => void;
 }) => {
   return (
-    <Group gap={40}>
-      <RadioCard
-        active={type == BudgetType.hourly}
-        Icon={IoTimeOutline}
-        onClick={() => change(BudgetType.hourly, "budgetType")}
-        text={PostStrings.hourlyRate}
-      />
-      <RadioCard
-        active={type == BudgetType.fixed}
-        Icon={GiPriceTag}
-        onClick={() => change(BudgetType.fixed, "budgetType")}
-        text={PostStrings.fixedPrice}
-      />
+    <Group gap={fl ? 20 : 40}>
+      {fl ? (
+        <>
+          <RadioCard
+            active={prices.budgetType == BudgetType.basic}
+            Icon={IoTimeOutline}
+            onClick={() => setCurrent(BudgetType.basic)}
+            text={PostStrings.basicPrice}
+          />
+          <RadioCard
+            active={prices.budgetType == BudgetType.standard}
+            Icon={GiPriceTag}
+            onClick={() => setCurrent(BudgetType.standard)}
+            text={PostStrings.standart}
+          />
+          <RadioCard
+            active={prices.budgetType == BudgetType.premium}
+            Icon={GiPriceTag}
+            onClick={() => setCurrent(BudgetType.premium)}
+            text={PostStrings.premium}
+          />
+        </>
+      ) : (
+        <>
+          <RadioCard
+            active={prices.budgetType == BudgetType.hourly}
+            Icon={IoTimeOutline}
+            onClick={() => setCurrent(BudgetType.hourly)}
+            text={PostStrings.hourlyRate}
+          />
+          <RadioCard
+            active={prices.budgetType == BudgetType.fixed}
+            Icon={GiPriceTag}
+            onClick={() => setCurrent(BudgetType.fixed)}
+            text={PostStrings.fixedPrice}
+          />
+        </>
+      )}
 
-      {type == BudgetType.hourly && (
+      {prices.budgetType != BudgetType.fixed && (
         <Box>
           <Group>
             <Stack flex={1}>
@@ -104,7 +155,7 @@ export const PostBudgetCard = ({
                   name="minPrice"
                   id="minPrice"
                   onChange={(e) => change(`${e.target.value}`, "minPrice")}
-                  value={priceFormat(`${minPrice ?? ""}`)}
+                  value={priceFormat(`${prices.minPrice ?? ""}`)}
                   maw={150}
                 />
 
@@ -118,7 +169,7 @@ export const PostBudgetCard = ({
                 <TextInput
                   name="maxPrice"
                   id="maxPrice"
-                  value={priceFormat(`${maxPrice ?? ""}`)}
+                  value={priceFormat(`${prices.maxPrice ?? ""}`)}
                   onChange={(e) => change(`${e.target.value}`, "maxPrice")}
                   maw={150}
                 />
@@ -135,7 +186,7 @@ export const PostBudgetCard = ({
           </Text>
         </Box>
       )}
-      {type == BudgetType.fixed && (
+      {prices.budgetType == BudgetType.fixed && (
         <Box>
           <Text size={"14px"} mb={24} c={"labelGray"}>
             {PostStrings.fixedPriceLabel}
@@ -150,7 +201,7 @@ export const PostBudgetCard = ({
             <TextInput
               name="price"
               id="price"
-              value={priceFormat(`${price ?? ""}`)}
+              value={priceFormat(`${prices.price ?? ""}`)}
               onChange={(e) => change(`${e.target.value}`, "price")}
               maw={150}
             />{" "}

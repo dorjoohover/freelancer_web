@@ -13,6 +13,7 @@ import {
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { IconCheck } from "@tabler/icons-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -57,6 +58,7 @@ export default function LoginPage() {
         icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
         autoClose: 2000,
       });
+      console.log(res);
       if (res.success) router.push("/");
       setLoading(false);
     } catch (error) {
@@ -67,7 +69,7 @@ export default function LoginPage() {
   return (
     <div>
       <Box maw={"600px"} w={"100%"} py={32} mx={"auto"}>
-        <Title mb={20}>Join as a client or freelancer</Title>
+        <Title mb={20}>{AuthStrings.join}</Title>
         <form action="" onSubmit={payload.onSubmit(() => login())}>
           <Stack>
             <TextInput
@@ -78,9 +80,9 @@ export default function LoginPage() {
               label={GlobalStrings.password}
               {...payload.getInputProps("password")}
             />
-            <Box mx={'auto'}>
+            <Box mx={"auto"} w={{ base: "100%", sm: "auto" }}>
               <Button
-             
+                w={{ base: "100%", sm: "auto" }}
                 disabled={loading}
                 pr={30}
                 pl={loading ? 15 : 30}
@@ -93,6 +95,12 @@ export default function LoginPage() {
                 {AuthStrings.login}
               </Button>
             </Box>
+            <span className="text-center">
+              {AuthStrings.registerAccount}
+              <Link href={"/register"} className="text-brand underline mx-1">
+                {AuthStrings.register}
+              </Link>
+            </span>
           </Stack>
         </form>
       </Box>

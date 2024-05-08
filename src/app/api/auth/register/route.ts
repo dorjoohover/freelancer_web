@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       );
 
       cookie.set("token", token);
-      cookie.set("verified", res.verified);
+      cookie.set("status", res.status);
       cookie.set("type", res.type);
       return NextResponse.json(
         { message: "Амжилттай.", success: true },

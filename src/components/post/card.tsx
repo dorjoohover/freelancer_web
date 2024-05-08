@@ -53,7 +53,7 @@ export const RadioCard = ({
         onClick();
       }}
     >
-      <Group justify="space-between" align="start">
+      <div className="flex items-start justify-between">
         <Box mt={16}>
           <Icon className="black" size={"24px"} />
           <Text mt={10}>{text}</Text>
@@ -67,7 +67,7 @@ export const RadioCard = ({
         >
           <Box w={14} h={14} className="border border-white rounded-full" />
         </Box>
-      </Group>
+      </div>
     </Box>
   );
 };
@@ -83,12 +83,14 @@ export const DetailCard = ({
 }) => {
   return (
     <Box className="flex justify-between gap-2" py={py} px={24}>
-      <Box>{children}</Box>
-      <Box
-        className="flex items-center justify-center w-10 h-10 rounded-full transition-all border-2 border-gray cursor-pointer hover:bg-gray"
-        onClick={() => onClick()}
-      >
-        <GoPencil fill="#FF8600" />
+      <Box flex={5}>{children}</Box>
+      <Box flex={1} className="flex justify-end">
+        <Box
+          className="flex items-center justify-center w-10 h-10 rounded-full transition-all border-2 border-gray cursor-pointer hover:bg-gray"
+          onClick={() => onClick()}
+        >
+          <GoPencil fill="#FF8600" />
+        </Box>
       </Box>
     </Box>
   );
@@ -114,7 +116,7 @@ export const PostCard = ({ post }: { post: PostDto }) => {
               return (
                 <SwiperSlide key={i}>
                   {" "}
-                  <img src={img}  alt="" />
+                  <img src={img} alt="" />
                 </SwiperSlide>
               );
             })}
@@ -127,7 +129,7 @@ export const PostCard = ({ post }: { post: PostDto }) => {
       </Card.Section>
 
       <Group>
-        <Box className="flex items-center gap-1 justify-between">
+        <Box className="flex items-center gap-1 justify-between mt-4">
           <Box className="flex items-center gap-1">
             <Avatar
               src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-3.png"
@@ -135,7 +137,10 @@ export const PostCard = ({ post }: { post: PostDto }) => {
             />
             <Box className="flex items-center gap-1">
               <Text>{GlobalStrings.adBy}</Text>
-              <Link href={`/profile/${(post.created as UserDto).email}`} className="font-bold">
+              <Link
+                href={`/profile/account/${(post.created as UserDto).email}`}
+                className="font-bold"
+              >
                 {(post.created as UserDto).firstname}
               </Link>
             </Box>

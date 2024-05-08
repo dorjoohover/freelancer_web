@@ -21,7 +21,9 @@ import { IoAddOutline } from "react-icons/io5";
 export const PostSkillStep = ({
   selected,
   setSkills,
+  step,
 }: {
+  step: number;
   selected: { id: string; name: string }[];
   setSkills: React.Dispatch<
     React.SetStateAction<
@@ -35,11 +37,11 @@ export const PostSkillStep = ({
   return (
     <Box>
       <Group>
-        <Text>2/5</Text>
+        <Text>2/{step}</Text>
         <Text>{PostStrings.jobPost}</Text>
       </Group>
 
-      <Group gap={40} align="start">
+      <Box className="gap-10 flex max-[800px]:flex-col items-start">
         <Stack flex={2} mt={24}>
           <Title order={2}>{PostStrings.skillTitleText}</Title>
         </Stack>
@@ -61,7 +63,7 @@ export const PostSkillStep = ({
             }}
           />
         </Stack>
-      </Group>
+      </Box>
     </Box>
   );
 };

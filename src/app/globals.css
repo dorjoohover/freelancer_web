@@ -36,6 +36,22 @@ body {
 
   background-image: url("https://s3-alpha-sig.figma.com/img/9d7e/8b3d/8a0d35f019c31d350e84accacf919cc2?Expires=1716163200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Jx0d3V9CuHVWdh9FdnHI3kx2rRQ4w-70TxRDqGxCgo1DY9Ev4-jIL0i3lK0dGnhUVv5g~r3UzFWNjgCZ7P6EMqBkQZDkj0~nNdQV~7pc1zMtEoIrhLGAXqk13NqLeT7H79RvAehUhaqF8xBgr3wJ~eIQCtPrbq5sS88g9dbq71Xp9T1S6HNzljxflwXmsCDetgn336kp2Nt1uGepmWfhnnxauhwffkrv-jLsXZp4FqltDa1yXwjYJtL-8GwR176LR-ltLxs9~HlC9lWOTyw9S4IrOlJP87ijiv3NlzypVzyhCYwUnljGdGlIcOzKlVgS-GXbEXzA~fJYZX3oXEDebw__");
   background-size: cover;
+  background-position: center center;
+}
+
+.poster .mantine-InputWrapper-label {
+  color: white !important;
+}
+
+@media screen and (max-width: 600px) {
+  .poster {
+    height: 60vh;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .poster {
+    height: 40vh;
+  }
 }
 
 @layer utilities {
@@ -127,8 +143,11 @@ textarea:focus-within {
   border-radius: 50%;
 }
 
+.rounded-r-none .mantine-Input-input .mantine-TextInput-input {
+  border-radius: 0 !important;
+}
 .spinner::before {
-  border-color: #474bff #0000;
+  border-color: var(--brand) #0000;
   animation: inherit;
   animation-duration: 0.5s;
   animation-direction: reverse;
@@ -138,6 +157,20 @@ textarea:focus-within {
   margin: 8.9px;
 }
 
+.swiper-button-next,
+.swiper-button-prev {
+  color: #000 !important;
+  background: white !important;
+  border: 1px solid #dbdcef !important;
+  transform: translateY(-20px) !important;
+  width: 50px !important;
+  border-radius: 100%;
+  height: 50px !important;
+}
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 24px !important;
+}
 @keyframes spinner-e04l1k {
   100% {
     transform: rotate(1turn);

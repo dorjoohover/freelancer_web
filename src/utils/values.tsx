@@ -328,7 +328,7 @@ export const createFreelancerProfileSteps = [
     title: "If you have relevant work experience, add it here.",
     description:
       "Freelancers who add their experience are twice as likely to win work. But if you’re just starting out, you can still create a great profile. Just head on to the next page.",
-    skip: true,
+    skip: undefined,
     next: "add your education",
     nextUrl: CreateFreelancerProfileStep.education,
     prevUrl: CreateFreelancerProfileStep.title,
@@ -340,7 +340,7 @@ export const createFreelancerProfileSteps = [
     title: "Clients like to know what you know - add your education here.",
     description:
       "You don’t have to have a degree. Adding any relevant education helps make your profile more visible.",
-    skip: true,
+    skip: undefined,
     nextUrl: CreateFreelancerProfileStep.languages,
     next: "add languages",
     prevUrl: CreateFreelancerProfileStep.employment,
@@ -706,4 +706,154 @@ export const business360 = [
     image:
       "https://s3-alpha-sig.figma.com/img/15a5/5c98/1a5236251b463dcb91a28c59f1c23755?Expires=1716163200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Cg~-quaT4XTe9vm8Fyq7jh9l8kPTjZWBbL2~M60XWw~euCDH-hhidJkUHZ4pUNwJ9Sd07cxLy2~LT74ICsuSpxXmCUk8NG4pLRG61Qiv75IWfBVJ6L1~qhBOssoCElaEDamMmaymNeeQfJuNhOKGpUDFAo0yxuNPyB~5RPG39RoEnusL8gK0AmH2YThtNR9H9HMnAVqw5~9RWrP-NErXK2MnLvCXaNcPf~mR87C2934E6q19aTtGSAdL1ftorCkhIKNj3g~UMMXr4Yn4tseJWgF46334dJy2Mg00UajZ2bmouq49RXdDVHi1QXHVIcAQdtPTr5mH72uoIszxC~OBnw__",
   },
+];
+
+export const interestingDirection = [
+  {
+    id: "udirdlaga",
+    value: "Удирдлага",
+  },
+  {
+    id: "huniinuuts",
+    value: "Хүний нөөц/захиргаа",
+  },
+  {
+    id: "law",
+    value: "Хууль, эрх зүй",
+  },
+  {
+    id: "finance",
+    value: "Санхүү/Бүртгэл",
+  },
+  {
+    id: "payment",
+    value: "Худалдан авалт",
+  },
+  {
+    id: "logistic",
+    value: "Тээвэр",
+  },
+  {
+    id: "marketing",
+    value: "Маркетинг",
+  },
+  {
+    id: "relationship",
+    value: "Олон нийтийн харилцаа",
+  },
+  {
+    id: "content",
+    value: "Контент медиа",
+  },
+  {
+    id: "informationSystem",
+    value: "Мэдээллийн систем",
+  },
+  {
+    id: "engineer",
+    value: "Инженер техник",
+  },
+  {
+    id: "security",
+    value: "Хөдөлмөрийн аюулгүй байдал",
+  },
+  {
+    id: "manifacturer",
+    value: "Үйлдвэрлэл",
+  },
+  {
+    id: "service",
+    value: "Үйлчилгээ",
+  },
+  {
+    id: "health",
+    value: "Эрүүл мэнд",
+  },
+  {
+    id: "counry",
+    value: "Хөдөө аж ахуй",
+  },
+  {
+    id: "business",
+    value: "Бизнес",
+  },
+  {
+    id: "riskManagement",
+    value: "Эрсдэлийн удирдлага",
+  },
+  {
+    id: "sale",
+    value: "Борлуулалт",
+  },
+];
+
+export const professionLevel = [
+  {
+    id: "ceo",
+    value: "Гүйцэтгэх захирал",
+  },
+  {
+    id: "gazrinzahiaral",
+    value: "Газрын захирал",
+  },
+  {
+    id: "ceo",
+    value: "Хэлтэс, Алба, Нэгжийн удирдлага",
+  },
+  {
+    id: "ceo",
+    value: "Ахлах менежер",
+  },
+  {
+    id: "ceo",
+    value: "Менежер",
+  },
+  {
+    id: "ceo",
+    value: "Ахлах мэргэжилтэн",
+  },
+  {
+    id: "ceo",
+    value: "Мэргэжилтэн",
+  },
+  {
+    id: "ceo",
+    value: "Түр/гэрээт ажилтан",
+  },
+];
+
+export const educationDegree = [
+  {
+    id: "",
+    value: "Бүрэн бус дунд",
+  },
+  {
+    id: "",
+    value: "Бүрэн дунд",
+  },
+  {
+    id: "",
+    value: "Мэргэжлийн",
+  },
+  {
+    id: "",
+    value: "Бакалавр",
+  },
+  {
+    id: "",
+    value: "Магистр",
+  },
+  {
+    id: "",
+    value: "Доктор",
+  },
+];
+
+export const languageLevels = [
+  "Beginner",
+  "Elementary",
+  "Intermediate",
+  "Upper intermediate",
+  "Advansed",
+  "Mastery",
 ];

@@ -12,7 +12,7 @@ export const FreelancerProfileCreateResume = ({
 }) => {
   return (
     <>
-      <Button
+      {/* <Button
         radius={"lg"}
         variant="light"
         bg={"white"}
@@ -29,7 +29,7 @@ export const FreelancerProfileCreateResume = ({
         onClick={resume}
       >
         {CreateProfileString.uploadResume}
-      </Button>
+      </Button> */}
       <Button
         radius={"lg"}
         variant="light"

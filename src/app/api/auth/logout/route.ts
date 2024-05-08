@@ -7,7 +7,8 @@ export async function GET(request: NextRequest) {
       success: true,
     });
     response.cookies.set("token", "", { httpOnly: true, expires: new Date(0) });
-    response.cookies.delete("verified");
+    response.cookies.delete("status");
+    response.cookies.delete("type");
 
     return response;
   } catch (error) {

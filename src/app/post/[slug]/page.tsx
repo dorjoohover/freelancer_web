@@ -43,11 +43,17 @@ export default function PostDymanicPage({
   useEffect(() => {
     getData();
   }, [params.slug]);
-  const price = () => {
-    return data?.budgetType == BudgetType.fixed
-      ? `${priceFormat(`${data?.price ?? 0}`)}₮`
-      : `${priceFormat(`${data?.minPrice ?? 0}`)}₮ -
-          ${priceFormat(`${data?.maxPrice ?? 0}`)}₮`;
+  const price = (value: {
+    price: number;
+    minPrice: number;
+    maxPrice: number;
+    budgetType: BudgetType;
+  }) => {
+    console.log(value);
+    return value.budgetType == BudgetType.fixed
+      ? `${priceFormat(`${value?.price ?? 0}`)}₮`
+      : `${priceFormat(`${value?.minPrice ?? 0}`)}₮ -
+          ${priceFormat(`${value?.maxPrice ?? 0}`)}₮`;
   };
   const reviews = reviewExample.map((e) => e.views).reduce((a, b) => a + b);
   const avg =
@@ -55,7 +61,7 @@ export default function PostDymanicPage({
     reviews;
 
   return (
-    <Box className="flex gap-10" maw={1200} mx={"auto"}>
+    <Box className="flex max-[800px]:flex-col gap-10" maw={1200} mx={"auto"}>
       <Stack flex={5}>
         <Title>{data?.title}</Title>
         <Text c={"labelGray"}>
@@ -78,9 +84,14 @@ export default function PostDymanicPage({
         </Group>
         <Text>{data?.description}</Text>
         <Box>
-          <Text>
-            {GlobalStrings.price}:{price()}
-          </Text>
+          {data?.prices.map((p, i) => {
+            return (
+              <Text key={i}>
+                {GlobalStrings.price}:{price(p)}
+              </Text>
+            );
+          })}
+
           <Text>
             {GlobalStrings.level}:{data?.level}
           </Text>
@@ -112,7 +123,8 @@ export default function PostDymanicPage({
           </Text>
           <Rating value={Math.round(avg * 100) / 100} fractions={2} readOnly />
         </Group>
-        <Group gap={20}>
+
+        <Box className="flex max-[600px]:flex-col items-start gap-5">
           <List flex={1}>
             {reviewExample.map((e, i) => {
               return (
@@ -172,12 +184,12 @@ export default function PostDymanicPage({
               </Group>
             </List.Item>
           </List>
-        </Group>
+        </Box>
       </Stack>
       <Stack flex={2} pos={"sticky"}>
         <Link
           target="_blank"
-          href={`/profile/${(data?.created as UserDto)?.email}`}
+          href={`/profile/account/${(data?.created as UserDto)?.email}`}
           className="w-full"
         >
           <Button w={"100%"}>{GlobalStrings.contactMe}</Button>

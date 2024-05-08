@@ -1,4 +1,4 @@
-import { CreateFreelancerProfileStep, PostStep } from "./enum";
+import { CreateFreelancerProfileStep, PostStep, UserType } from "./enum";
 
 export const checkRegisterNumber = (value: string): boolean => {
   const re = /^[\u0430-\u044F]{2}[0-9]{8}$/;
@@ -24,20 +24,22 @@ export const checkName = (value: string): boolean => {
   return value === undefined ? false : value?.length > 1;
 };
 
-export const postStep = (value: PostStep): number => {
+export const postStep = (value: PostStep, type: UserType): number => {
   switch (value) {
     case PostStep.title:
       return 1;
     case PostStep.skill:
-      return 2;
+      return type == UserType.CLIENT ? 2 : 0;
     case PostStep.scope:
-      return 3;
+      return type == UserType.CLIENT ? 3 : 0;
+    case PostStep.about:
+      return type == UserType.FREELANCER ? 2 : 0;
     case PostStep.budget:
-      return 4;
+      return type == UserType.CLIENT ? 4 : 3;
     case PostStep.description:
-      return 5;
+      return type == UserType.CLIENT ? 5 : 4;
     case PostStep.review:
-      return 6;
+      return type == UserType.CLIENT ? 6 : 5;
     default:
       return 0;
   }
@@ -56,6 +58,8 @@ export const profileCreateStep = (
       return 3;
     case CreateFreelancerProfileStep.languages:
       return 4;
+    case CreateFreelancerProfileStep.success:
+      return 5;
     // case CreateFreelancerProfileStep.skill:
     //   return 2;
     // case CreateFreelancerProfileStep.scope:
@@ -71,28 +75,49 @@ export const profileCreateStep = (
   }
 };
 
-export const postNextStepString = (value: number) => {
+export const postNextStepString = (value: number, type: UserType) => {
   switch (value) {
     case 1:
-      return {
-        name: "Skills",
-        url: PostStep.skill,
-      };
+      return type == UserType.CLIENT
+        ? {
+            name: "Skills",
+            url: PostStep.skill,
+          }
+        : {
+            name: "About",
+            url: PostStep.about,
+          };
     case 2:
-      return {
-        name: "Scope",
-        url: PostStep.scope,
-      };
+      return type == UserType.CLIENT
+        ? {
+            name: "About",
+            url: PostStep.about,
+          }
+        : {
+            name: "Budget",
+            url: PostStep.budget,
+          };
+
     case 3:
-      return {
-        name: "Budget",
-        url: PostStep.budget,
-      };
+      return type == UserType.CLIENT
+        ? {
+            name: "Budget",
+            url: PostStep.budget,
+          }
+        : {
+            name: "Description",
+            url: PostStep.description,
+          };
     case 4:
-      return {
-        name: "Description",
-        url: PostStep.description,
-      };
+      return type == UserType.CLIENT
+        ? {
+            name: "Description",
+            url: PostStep.description,
+          }
+        : {
+            name: "",
+            url: PostStep.review,
+          };
     case 5:
       return {
         name: "",
@@ -102,28 +127,48 @@ export const postNextStepString = (value: number) => {
       return {};
   }
 };
-export const postPrevStepString = (value: number) => {
+export const postPrevStepString = (value: number, type: UserType) => {
   switch (value) {
+    case 1:
+      return {
+        name: "Title",
+        url: PostStep.title,
+      };
     case 2:
       return {
         name: "Title",
         url: PostStep.title,
       };
     case 3:
-      return {
-        name: "Skills",
-        url: PostStep.skill,
-      };
+      return type == UserType.CLIENT
+        ? {
+            name: "Skills",
+            url: PostStep.skill,
+          }
+        : {
+            name: "About",
+            url: PostStep.about,
+          };
     case 4:
-      return {
-        name: "Scope",
-        url: PostStep.scope,
-      };
+      return type == UserType.CLIENT
+        ? {
+            name: "Scope",
+            url: PostStep.scope,
+          }
+        : {
+            name: "Budget",
+            url: PostStep.budget,
+          };
     case 5:
-      return {
-        name: "Budget",
-        url: PostStep.budget,
-      };
+      return type == UserType.CLIENT
+        ? {
+            name: "Budget",
+            url: PostStep.budget,
+          }
+        : {
+            name: "Description",
+            url: PostStep.description,
+          };
     case 6:
       return {
         name: "Description",
@@ -134,14 +179,17 @@ export const postPrevStepString = (value: number) => {
   }
 };
 
-export const DateFormat = (value: Date | null, symbol = "-") => {
-  if (value == null) return "";
-  let month = value.getMonth() + 1;
+export const DateFormat = (v: Date | null, symbol = "-") => {
+  if (v == null || v == undefined || v.toString() == "") return "";
+  let value = new Date(v);
+
+  let month = value?.getMonth() + 1;
   let monthStr = month < 10 ? `0${month}` : `${month}`;
-  let day = value.getDate();
+  let day = value?.getDate();
 
   let dayStr = day < 10 ? `0${day}` : `${day}`;
-  return `${value.getFullYear()}${symbol}${monthStr}${symbol}${dayStr}`;
+
+  return `${value?.getFullYear()}${symbol}${monthStr}${symbol}${dayStr}`;
 };
 
 export const priceFormat = (value: string) => {

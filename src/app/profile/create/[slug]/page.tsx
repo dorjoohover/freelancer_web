@@ -9,6 +9,7 @@ import {
   FreelancerCreateProfileExperience,
   FreelancerExperienceType,
 } from "@/components/profile/create/experience";
+import { FreelancerCreateProfileLanguage } from "@/components/profile/create/language";
 import {
   FreelanceProfileCreateResumeSide,
   FreelancerProfileCreateResume,
@@ -16,17 +17,39 @@ import {
 import { CreateFreelancerProfileStep } from "@/utils/enum";
 import { checkName, profileCreateStep } from "@/utils/function";
 import { FreelancerProfileMessage } from "@/utils/message";
-import { CreateProfileString } from "@/utils/string";
-import { createFreelancerProfileSteps } from "@/utils/values";
-import { ActionIcon, Box, Button, Modal, Text, TextInput } from "@mantine/core";
+import { CreateProfileString, GlobalStrings } from "@/utils/string";
+import {
+  createFreelancerProfileSteps,
+  interestingDirection,
+} from "@/utils/values";
+import {
+  ActionIcon,
+  Box,
+  Button,
+  Modal,
+  MultiSelect,
+  Select,
+  Text,
+  TextInput,
+  Title,
+  rem,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
+import { notifications } from "@mantine/notifications";
+import { IconCheck } from "@tabler/icons-react";
+import { language } from "googleapis/build/src/apis/language";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
 export type FreelancerProfileType = {
-  role: string;
+  role: string[];
   experiences: FreelancerExperienceType[];
   educations: FreelancerEducationType[];
+  languages: {
+    language: string;
+    level: string;
+  }[];
 };
 function CreateProfileDynamicPage({ params }: { params: { slug: string } }) {
   const step = profileCreateStep(
@@ -35,20 +58,31 @@ function CreateProfileDynamicPage({ params }: { params: { slug: string } }) {
   const [opened, { open, close }] = useDisclosure(false);
   const payload = useForm<FreelancerProfileType>({
     initialValues: {
-      role: "",
+      languages: [],
+      role: [],
       experiences: [],
       educations: [],
     },
     validate: {
       role: (value) =>
-        !checkName(value) ? FreelancerProfileMessage.needRole : null,
+        value.length > 0 ? FreelancerProfileMessage.needRole : null,
     },
   });
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      localStorage.getItem("profilePayload") != null
+    ) {
+      let data = JSON.parse(localStorage.getItem("profilePayload") as string);
+
+      payload.setValues(data);
+    }
+  }, []);
   const router = useRouter();
   const active = () => {
     switch (step) {
       case 1:
-        return checkName(payload.values.role);
+        return payload.values.role.length > 0;
       case 2:
         return true;
       case 3:
@@ -59,9 +93,51 @@ function CreateProfileDynamicPage({ params }: { params: { slug: string } }) {
         return false;
     }
   };
+
+  const send = async () => {
+    try {
+      const notif = notifications.show({
+        loading: true,
+        message: GlobalStrings.wait,
+        title: GlobalStrings.info,
+        autoClose: false,
+        bg: "brand",
+        color: "teal",
+        withCloseButton: false,
+      });
+      let body = {
+        role: payload.values.role,
+        languages: payload.values.languages,
+        experiences: payload.values.experiences,
+        educations: payload.values.educations,
+      };
+      let res = await fetch("/api/user/profile/freelancer", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }).then((d) => d.json());
+      notifications.update({
+        id: notif,
+        color: res.success ? "teal" : "red",
+        loading: false,
+        message: res.message,
+        title: GlobalStrings.info,
+        icon: <IconCheck style={{ width: rem(18), height: rem(18) }} />,
+        autoClose: 2000,
+      });
+
+      if (res.success) router.push("/profile/create/success");
+    } catch (error) {}
+  };
   const skip = () => {};
   const next = () => {
-    localStorage.setItem("profilePayload", JSON.stringify(payload));
+    if (step == 4) {
+      localStorage.setItem("profilePayload", JSON.stringify(payload.values));
+      send();
+      return;
+    }
 
     let isPush = createFreelancerProfileSteps[step].next != undefined;
     if (isPush) {
@@ -79,141 +155,164 @@ function CreateProfileDynamicPage({ params }: { params: { slug: string } }) {
     }
   };
   return (
-    <Box>
-      <CreateFreelancerProfileContainer
-        back={back}
-        next={next}
-        active={active()}
-        skip={
-          createFreelancerProfileSteps[step].skip != undefined
-            ? skip
-            : undefined
-        }
-        nextString={createFreelancerProfileSteps[step].next}
-        name={createFreelancerProfileSteps[step].name}
-        step={createFreelancerProfileSteps[step].step}
-        description={createFreelancerProfileSteps[step].description}
-        title={createFreelancerProfileSteps[step].title}
-        side={step == 0 ? <FreelanceProfileCreateResumeSide /> : <></>}
-      >
-        {step == 0 && (
-          <FreelancerProfileCreateResume
-            linkedin={() => {}}
-            manual={() => {
-              router.push(
-                `/profile/create/${createFreelancerProfileSteps[step].nextUrl}`
-              );
-            }}
-            resume={() => {}}
-          />
-        )}
-        {step == 1 && (
-          <TextInput
-            label={CreateProfileString.professionalRoleLabel}
-            placeholder={CreateProfileString.professionalRoleLabel}
-            {...payload.getInputProps("role")}
-          />
-        )}
-        {/* experience */}
-        {step == 2 && (
-          <>
-            {payload.values.experiences.map((e, i) => {
-              return <span key={i}>{e.company}</span>;
-            })}
+    <Box px={16}>
+      {step != 5 && (
+        <CreateFreelancerProfileContainer
+          back={back}
+          next={next}
+          active={active()}
+          skip={
+            createFreelancerProfileSteps[step].skip != undefined
+              ? skip
+              : undefined
+          }
+          nextString={createFreelancerProfileSteps[step].next}
+          name={createFreelancerProfileSteps[step].name}
+          step={createFreelancerProfileSteps[step].step}
+          description={createFreelancerProfileSteps[step].description}
+          title={createFreelancerProfileSteps[step].title}
+          side={step == 0 ? <FreelanceProfileCreateResumeSide /> : <></>}
+        >
+          {step == 0 && (
+            <FreelancerProfileCreateResume
+              linkedin={() => {}}
+              manual={() => {
+                router.push(
+                  `/profile/create/${createFreelancerProfileSteps[step].nextUrl}`
+                );
+              }}
+              resume={() => {}}
+            />
+          )}
+          {step == 1 && (
+            <MultiSelect
+              {...payload.getInputProps("role")}
+              data={interestingDirection.map((a) => a.value)}
+            />
+          )}
+          {/* experience */}
+          {step == 2 && (
+            <>
+              <Modal
+                opened={opened}
+                onClose={close}
+                title={CreateProfileString.addExperience}
+                centered
+                size={"lg"}
+                closeOnClickOutside={false}
+                radius={"lg"}
+              >
+                <FreelancerCreateProfileExperience
+                  cancel={close}
+                  save={(e: FreelancerExperienceType) => {
+                    const experiences = [...payload.values.experiences, e];
+                    payload.setValues((prev) => ({
+                      ...prev,
+                      experiences: experiences,
+                    }));
 
-            <Modal
-              opened={opened}
-              onClose={close}
-              title={CreateProfileString.addExperience}
-              centered
-              size={"lg"}
-              closeOnClickOutside={false}
-              radius={"lg"}
-            >
-              <FreelancerCreateProfileExperience
-                cancel={close}
-                save={(e: FreelancerExperienceType) => {
-                  const experiences = [...payload.values.experiences, e];
+                    close();
+                  }}
+                />
+              </Modal>
+              <CardWrapper
+                addString={CreateProfileString.addExp}
+                edit={(e) => {}}
+                data={payload.values.experiences}
+                open={open}
+                remove={(i) => {
+                  let exp = payload.values.experiences
+
+                    .slice(0, i)
+                    .concat(payload.values.experiences.slice(i + 1));
+
                   payload.setValues((prev) => ({
                     ...prev,
-                    experiences: experiences,
+                    experiences: exp,
                   }));
-
-                  close();
                 }}
+                type={CreateFreelancerProfileStep.employment}
               />
-            </Modal>
-            <CardWrapper
-              addString={CreateProfileString.addExp}
-              edit={(e) => {}}
-              data={payload.values.experiences}
-              open={open}
-              remove={(i) => {
-                let exp = payload.values.experiences
+            </>
+          )}
+          {/* education */}
+          {step == 3 && (
+            <>
+              {payload.values.educations.map((e, i) => {
+                return <span key={i}>{e.school}</span>;
+              })}
 
-                  .slice(0, i)
-                  .concat(payload.values.experiences.slice(i + 1));
+              <Modal
+                opened={opened}
+                onClose={close}
+                title={CreateProfileString.addEducation}
+                centered
+                size={"lg"}
+                closeOnClickOutside={false}
+                radius={"lg"}
+              >
+                <FreelancerCreateProfileEducation
+                  cancel={close}
+                  save={(e) => {
+                    const educations = [...payload.values.educations, e];
+                    payload.setValues((prev) => ({
+                      ...prev,
+                      educations: educations,
+                    }));
+                    close();
+                  }}
+                />
+              </Modal>
+              <CardWrapper
+                addString={CreateProfileString.addEdu}
+                edit={(e) => {}}
+                data={payload.values.educations}
+                open={open}
+                remove={(i) => {
+                  let exp = payload.values.experiences
 
-                payload.setValues((prev) => ({
-                  ...prev,
-                  experiences: exp,
-                }));
-              }}
-              type={CreateFreelancerProfileStep.employment}
-            />
-          </>
-        )}
-        {/* education */}
-        {step == 3 && (
-          <>
-            {payload.values.educations.map((e, i) => {
-              return <span key={i}>{e.school}</span>;
-            })}
+                    .slice(0, i)
+                    .concat(payload.values.experiences.slice(i + 1));
 
-            <Modal
-              opened={opened}
-              onClose={close}
-              title={CreateProfileString.addEducation}
-              centered
-              size={"lg"}
-              closeOnClickOutside={false}
-              radius={"lg"}
-            >
-              <FreelancerCreateProfileEducation
-                cancel={close}
-                save={(e) => {
-                  const educations = [...payload.values.educations, e];
                   payload.setValues((prev) => ({
                     ...prev,
-                    educations: educations,
+                    experiences: exp,
                   }));
-                  close();
                 }}
+                type={CreateFreelancerProfileStep.education}
               />
-            </Modal>
-            <CardWrapper
-              addString={CreateProfileString.addEdu}
-              edit={(e) => {}}
-              data={payload.values.educations}
-              open={open}
-              remove={(i) => {
-                let exp = payload.values.experiences
+            </>
+          )}
 
-                  .slice(0, i)
-                  .concat(payload.values.experiences.slice(i + 1));
-
+          {step == 4 && (
+            <FreelancerCreateProfileLanguage
+              languages={payload.values.languages}
+              onClick={(e) => {
+                let languages = [...payload.values.languages, e];
                 payload.setValues((prev) => ({
                   ...prev,
-                  experiences: exp,
+                  languages: languages,
                 }));
               }}
-              type={CreateFreelancerProfileStep.education}
             />
-          </>
-        )}
-
-        {step == 4 && <>languages</>}
-      </CreateFreelancerProfileContainer>
+          )}
+        </CreateFreelancerProfileContainer>
+      )}
+      {step == 5 && (
+        <div className="flex w-full items-center flex-col">
+          <Title>Амжилттай шинэчиллээ.</Title>
+          <div>
+            <Button
+              mt={20}
+              variant="light"
+              radius={"lg"}
+              onClick={() => router.push("/")}
+            >
+              Үндсэн хуудас
+            </Button>
+          </div>
+        </div>
+      )}
     </Box>
   );
 }
@@ -263,7 +362,7 @@ const CardWrapper = ({
       </Box>
     </Box>
   ) : (
-    <Box className="flex items-center gap-2  h-[242px]">
+    <Box className="flex max-[600px]:flex-col max-[600px]:items-start items-center gap-2  h-[242px]">
       <ActionIcon
         bg={"none"}
         size={40}
@@ -274,17 +373,19 @@ const CardWrapper = ({
       >
         <IoMdAdd className="text-[26px]" />{" "}
       </ActionIcon>
-      {list.map((e, i) => {
-        return (
-          <FreelancerExperienceCard
-            edit={() => edit(i)}
-            remove={() => remove(i)}
-            d={e}
-            type={type}
-            key={i}
-          />
-        );
-      })}
+      <Box className="flex max-[600px]:flex-col w-full">
+        {list.map((e, i) => {
+          return (
+            <FreelancerExperienceCard
+              edit={() => edit(i)}
+              remove={() => remove(i)}
+              d={e}
+              type={type}
+              key={i}
+            />
+          );
+        })}
+      </Box>
     </Box>
   );
 };

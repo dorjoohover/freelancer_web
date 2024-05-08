@@ -62,10 +62,11 @@ export const FreelancerExperienceCard = ({
   remove: () => void;
   type: CreateFreelancerProfileStep;
 }) => {
-  const formatDate = (date: Date) => {
+  const formatDate = (d: Date) => {
+    let date = new Date(d);
     return `${
-      months.filter((m) => m.value == date.getMonth() + 1)[0].name
-    } ${date.getUTCFullYear()}`;
+      months.filter((m) => m.value == date?.getMonth() + 1)[0].name
+    } ${date?.getUTCFullYear()}`;
   };
   let title = "";
   let description = "";
@@ -74,10 +75,12 @@ export const FreelancerExperienceCard = ({
   switch (type) {
     case CreateFreelancerProfileStep.education:
       title = (d as FreelancerEducationType).school;
-      description = `${(d as FreelancerEducationType).degree} ${
+      description = `${(d as FreelancerEducationType).degree} `;
+      addition = `${(d as FreelancerEducationType).region}  ${
+        (d as FreelancerEducationType).study
+      } ${(d as FreelancerEducationType).gpa} ${
         (d as FreelancerEducationType).startDate
       } - ${(d as FreelancerEducationType).endDate}`;
-      addition = "";
       break;
 
     case CreateFreelancerProfileStep.employment:
@@ -90,17 +93,17 @@ export const FreelancerExperienceCard = ({
           : formatDate(
               (d as FreelancerExperienceType).endDate ?? new Date(Date.now())
             )
-      }}`;
-      addition = `${(d as FreelancerExperienceType)?.location},${
-        (d as FreelancerExperienceType)?.region?.name
       }`;
+      addition = `${(d as FreelancerExperienceType)?.companyDirect}, ${
+        (d as FreelancerExperienceType)?.profession
+      }, ${(d as FreelancerExperienceType)?.level}`;
       break;
 
     default:
   }
 
   return (
-    <Box className="rounded-lg border border-gray" p={20}>
+    <Box className="rounded-lg border border-gray max-[600px]:w-full" p={20}>
       <Box className="flex gap-2.5 ">
         <FaRegFolderOpen className="text-brand" size={50} />
         <Stack gap={0} h={200}>

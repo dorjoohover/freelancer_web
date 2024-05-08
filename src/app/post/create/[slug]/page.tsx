@@ -1,4 +1,5 @@
 "use client";
+import { PostAboutStep } from "@/components/post/step/about";
 import PostBudgetStep from "@/components/post/step/budget";
 import { PostDescriptionStep } from "@/components/post/step/descrition";
 import { PostReviewStep } from "@/components/post/step/review";
@@ -6,6 +7,7 @@ import { PostReviewStep } from "@/components/post/step/review";
 import { PostScopeStep } from "@/components/post/step/scope";
 import { PostSkillStep } from "@/components/post/step/skill";
 import { PostTitleStep } from "@/components/post/step/title";
+import { UserDto } from "@/models/user.model";
 
 import {
   BudgetType,
@@ -13,6 +15,7 @@ import {
   PostScopeLevel,
   PostScopeSize,
   PostStep,
+  UserType,
 } from "@/utils/enum";
 import {
   postNextStepString,
@@ -36,41 +39,66 @@ export type PostType = {
   sizeActive: boolean;
   duration?: PostScopeDuration;
   date: [Date | null, Date | null];
-
+  current: BudgetType;
   durationActive: boolean;
   level?: PostScopeLevel;
   levelActive: boolean;
-  budgetType: BudgetType;
-  minPrice: number;
-  maxPrice: number;
+
+  prices: {
+    minPrice: number;
+    maxPrice: number;
+    price: number;
+    budgetType: BudgetType;
+  }[];
   description: string;
-  price: number;
   file?: File;
   category?: string;
+  gig: string;
+  why: string;
 };
 export default function PostCreateDynamicPage({
   params,
 }: {
   params: { slug: string };
 }) {
+  const [user, setUser] = useState<UserDto>();
   const [payload, setPayload] = useState<PostType>({
     title: "",
     skills: [],
+    why: "",
+    gig: "",
+    current: BudgetType.basic,
     size: undefined,
     sizeActive: true,
     duration: undefined,
     level: undefined,
     durationActive: true,
     levelActive: true,
-    budgetType: BudgetType.hourly,
-    minPrice: 10000,
-    maxPrice: 30000,
+
+    prices: [
+      {
+        minPrice: 10000,
+        maxPrice: 30000,
+        price: 0,
+        budgetType: BudgetType.hourly,
+      },
+    ],
+
     date: [null, null],
-    price: 0,
     description: "",
     file: undefined,
     category: undefined,
   });
+  const getUser = async () => {
+    try {
+      const res = await fetch("/api/user").then((d) => d.json());
+      if (res.success) {
+        setUser(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const [selected, setSkills] = useState<{ name: string; id: string }[]>([]);
   useEffect(() => {
     if (
@@ -81,29 +109,43 @@ export default function PostCreateDynamicPage({
 
       setPayload(data);
     }
+
+    getUser();
   }, []);
   useEffect(() => {
     if (payload?.skills?.length > 0) {
       setSkills(payload.skills);
     }
   }, [payload]);
-  const step = postStep((params.slug as PostStep) ?? PostStep.title);
+  const step = postStep(
+    (params.slug as PostStep) ?? PostStep.title,
+    user?.type ?? UserType.FREELANCER
+  );
   const router = useRouter();
   const send = async () => {
     try {
-      let body = {
-        title: payload.title,
-        description: payload.description,
-        category: payload.category,
-        skills: payload.skills.map((s) => s.id),
-        size: payload.size,
-        date: payload.date,
-        level: payload.level,
-        budgetType: payload.budgetType,
-        price: payload.price,
-        minPrice: payload.minPrice,
-        maxPrice: payload.maxPrice,
-      };
+      let body =
+        user?.type == UserType.CLIENT
+          ? {
+              title: payload.title,
+              description: payload.description,
+              category: payload.category,
+              skills: payload.skills.map((s) => s.id),
+              size: payload.size,
+              date: payload.date,
+              level: payload.level,
+              prices: payload.prices,
+            }
+          : {
+              title: payload.title,
+              description: payload.description,
+              category: payload.category,
+              why: payload.why,
+              gig: payload.gig,
+
+              prices: payload.prices,
+            };
+
       const notif = notifications.show({
         loading: true,
         bg: "brand",
@@ -140,36 +182,39 @@ export default function PostCreateDynamicPage({
     }
   };
   const nextStep = () => {
-    if (step == 2) {
+    if (step == 2 && user?.type === UserType.CLIENT) {
       let p = { ...payload, skills: selected };
       localStorage.setItem("postPayload", JSON.stringify(p));
     } else {
       localStorage.setItem("postPayload", JSON.stringify(payload));
     }
-    router.push(`/post/create/${postNextStepString(step).url}`);
+
+    router.push(
+      `/post/create/${
+        postNextStepString(step, user?.type ?? UserType.FREELANCER).url
+      }`
+    );
   };
   const active = () => {
     switch (step) {
       case 1:
         return payload.title != "" && payload.category != undefined;
       case 2:
-        return selected.length > 0;
+        return user?.type == UserType.FREELANCER
+          ? payload.why?.length > 50 && payload.gig?.length > 50
+          : selected.length > 0;
       case 3:
-        return (
-          payload.size != undefined &&
-          payload.date[0] != null &&
-          payload.date[1] != null &&
-          payload.level
-        );
+        return user?.type == UserType.FREELANCER
+          ? payload.prices.length > 2
+          : payload.size != undefined &&
+              payload.date[0] != null &&
+              payload.date[1] != null &&
+              payload.level;
 
       case 4:
-        return (
-          (payload.budgetType == BudgetType.hourly &&
-            payload.minPrice <= payload.maxPrice &&
-            payload.minPrice != 0 &&
-            payload.maxPrice != 0) ||
-          (payload.price != 0 && payload.budgetType == BudgetType.fixed)
-        );
+        return user?.type == UserType.CLIENT
+          ? payload.prices.length > 0
+          : payload.description.length >= 50 || payload.file != undefined;
 
       case 5:
         return payload.description.length >= 50 || payload.file != undefined;
@@ -177,11 +222,28 @@ export default function PostCreateDynamicPage({
         return false;
     }
   };
+
+  const last =
+    (step == 5 && user?.type == UserType.CLIENT) ||
+    (step == 4 && user?.type == UserType.FREELANCER);
+  const review =
+    (step == 6 && user?.type == UserType.CLIENT) ||
+    (step == 5 && user?.type == UserType.FREELANCER);
+  const budget =
+    (step == 4 && user?.type == UserType.CLIENT) ||
+    (step == 3 && user?.type == UserType.FREELANCER);
+
   return (
     <Box>
-      <Box mx={"auto"} maw={1000} py={16} px={20}>
+      <Box
+        mx={"auto"}
+        maw={1000}
+        py={{ md: 16, base: 0 }}
+        px={{ md: 20, base: 0 }}
+      >
         {step == 1 && (
           <PostTitleStep
+            step={user?.type == UserType.FREELANCER ? 4 : 5}
             cateValue={payload.category}
             onCategory={(e) => setPayload((prev) => ({ ...prev, category: e }))}
             value={payload.title}
@@ -190,39 +252,103 @@ export default function PostCreateDynamicPage({
             }}
           />
         )}
-        {step == 2 && (
-          <PostSkillStep selected={selected} setSkills={setSkills} />
+        {step == 2 &&
+          (user?.type == UserType.CLIENT ? (
+            <PostSkillStep step={5} selected={selected} setSkills={setSkills} />
+          ) : (
+            <PostAboutStep
+              step={4}
+              change={(e, key) => {
+                console.log(e, key);
+                setPayload((prev) => ({ ...prev, [key]: e as string }));
+              }}
+              gig={payload.gig}
+              why={payload.why}
+            />
+          ))}
+        {step == 3 && user?.type == UserType.CLIENT && (
+          <PostScopeStep step={5} payload={payload} setPayload={setPayload} />
         )}
-        {step == 3 && (
-          <PostScopeStep payload={payload} setPayload={setPayload} />
-        )}
-        {step == 4 && (
+        {budget && (
           <PostBudgetStep
-            minPrice={payload.minPrice}
-            maxPrice={payload.maxPrice}
-            price={payload.price}
-            type={payload.budgetType}
-            change={(e, key) => {
-              let numbers: (keyof PostType)[] = [
-                "price",
-                "minPrice",
-                "maxPrice",
-              ];
-              if (numbers.includes(key)) {
-                let value = 0;
-                if (e != "")
-                  value = Number.isNaN(parseInt(`${e.split(",").join("")}`))
-                    ? 0
-                    : parseInt(`${e.split(",").join("")}`);
-                setPayload((prev) => ({ ...prev, [key]: value }));
+            userType={user?.type}
+            prices={payload.prices}
+            change={(el, k) => {
+              let e = el.split(",").join("");
+              if (user?.type == UserType.CLIENT) {
+                let prices = payload.prices.filter(
+                  (p) =>
+                    p.budgetType == BudgetType.fixed ||
+                    p.budgetType == BudgetType.hourly
+                );
+                if (prices.length > 1) {
+                  prices = [payload.prices[payload.prices.length - 1]];
+                }
+                setPayload((prev) => ({ ...prev, prices: prices }));
               } else {
-                setPayload((prev) => ({ ...prev, [key]: e }));
+                let prices = payload.prices.filter(
+                  (p) =>
+                    p.budgetType != BudgetType.fixed &&
+                    p.budgetType != BudgetType.hourly
+                );
+                if (prices.length > 3) {
+                  prices = payload.prices.slice(0, 3);
+                }
+
+                setPayload((prev) => ({ ...prev, prices: prices }));
               }
+              let index = payload.prices.findIndex(
+                (p) => p.budgetType == payload.current
+              );
+              if (index != -1) {
+                payload.prices[index][k] = isNaN(parseInt(e)) ? 0 : parseInt(e);
+                payload.prices[index]["budgetType"] = payload.current;
+                setPayload((prev) => ({ ...prev }));
+              } else {
+                let prices = [
+                  ...payload.prices,
+                  {
+                    minPrice:
+                      k == "minPrice"
+                        ? isNaN(parseInt(e))
+                          ? 0
+                          : parseInt(e)
+                        : 0,
+                    maxPrice:
+                      k == "maxPrice"
+                        ? isNaN(parseInt(e))
+                          ? 0
+                          : parseInt(e)
+                        : 0,
+                    price:
+                      k == "price" ? (isNaN(parseInt(e)) ? 0 : parseInt(e)) : 0,
+                    budgetType: payload.current,
+                  },
+                ];
+                setPayload((prev) => ({ ...prev, prices: prices }));
+              }
+            }}
+            current={payload.current}
+            setCurrent={(e) => {
+              if (!payload.prices.filter((a) => a.budgetType == e)[0]) {
+                let prices = [
+                  ...payload.prices,
+                  {
+                    minPrice: 0,
+                    maxPrice: 0,
+                    price: 0,
+                    budgetType: e,
+                  },
+                ];
+                setPayload((prev) => ({ ...prev, prices: prices }));
+              }
+              setPayload((prev) => ({ ...prev, current: e }));
             }}
           />
         )}
-        {step == 5 && (
+        {last && (
           <PostDescriptionStep
+            step={user?.type == UserType.FREELANCER ? 4 : 5}
             description={payload.description}
             file={""}
             change={(e, key) => {
@@ -231,19 +357,25 @@ export default function PostCreateDynamicPage({
             }}
           />
         )}
-        {step == 6 && (
+        {review && (
           <PostReviewStep
+            type={user?.type ?? UserType.FREELANCER}
             payload={payload}
             setPayload={setPayload}
             back={() => {
-              router.push(`/post/${postPrevStepString(step).url}`);
+              router.push(
+                `/post/create/${
+                  postPrevStepString(step, user?.type ?? UserType.FREELANCER)
+                    .url
+                }`
+              );
             }}
             send={send}
           />
         )}
       </Box>
 
-      {step != 6 && (
+      {!review && (
         <Box
           w={"100%"}
           className="transition-all"
@@ -255,7 +387,9 @@ export default function PostCreateDynamicPage({
           <Box
             pos={"absolute"}
             left={0}
-            right={`${100 - 20 * step}%`}
+            right={`${
+              100 - (user?.type == UserType.FREELANCER ? 25 : 20) * step
+            }%`}
             className="rounded-full z-20"
             bg={"brand"}
             bottom={0}
@@ -263,8 +397,8 @@ export default function PostCreateDynamicPage({
           />
         </Box>
       )}
-      {step != 6 && (
-        <Group my={20} justify="space-between" mx={20}>
+      {!review && (
+        <Group my={20} pb={20} justify="space-between" mx={20}>
           <Button
             c={"brand"}
             radius={"xl"}
@@ -272,7 +406,12 @@ export default function PostCreateDynamicPage({
             color="gray"
             variant="light"
             onClick={() => {
-              router.push(`/post/${postPrevStepString(step).url}`);
+              router.push(
+                `/post/create/${
+                  postPrevStepString(step, user?.type ?? UserType.FREELANCER)
+                    .url
+                }`
+              );
             }}
           >
             {GlobalStrings.back}
@@ -286,9 +425,14 @@ export default function PostCreateDynamicPage({
             disabled={!active()}
             bg={active() ? "brand" : "gray"}
           >
-            {step == 5
+            {last
               ? PostStrings.reviewJobPost
-              : `${GlobalStrings.next + ":" + postNextStepString(step).name}`}
+              : `${
+                  GlobalStrings.next +
+                  ":" +
+                  postNextStepString(step, user?.type ?? UserType.FREELANCER)
+                    .name
+                }`}
           </Button>
         </Group>
       )}

@@ -32,7 +32,7 @@ import {
 } from "@/utils/values";
 import { PostDescriptionCard } from "./descrition";
 import { PostTitleCard } from "./title";
-import { BudgetType } from "@/utils/enum";
+import { BudgetType, UserType } from "@/utils/enum";
 import { priceFormat } from "@/utils/function";
 import { PostSkillCard } from "./skill";
 import { PostScopeCard } from "./scope";
@@ -43,8 +43,10 @@ export const PostReviewStep = ({
   setPayload,
   back,
   send,
+  type,
 }: {
   send: () => void;
+  type: UserType;
   back: () => void;
   payload: PostType;
   setPayload: React.Dispatch<React.SetStateAction<PostType>>;
@@ -86,17 +88,17 @@ export const PostReviewStep = ({
     setPayload(copy);
     send();
   };
+  const fl = type == UserType.FREELANCER;
   return (
     <Box>
-    
-      <Group justify="space-between" mb={20}>
+      <Group justify="space-between" mb={20} px={{ md: "16px", base: 0 }}>
         <Title>{PostStrings.jobDetails}</Title>
         <Button
           bg={"brand"}
           radius={"xl"}
           px={24}
           onClick={() => {
-            // router.push(`/post/${postPrevStepString(step).url}`);
+            post();
           }}
         >
           {PostStrings.jobPost}
@@ -135,39 +137,43 @@ export const PostReviewStep = ({
             }`}
           />
         </DetailCard>
-        <DetailCard
-          py="16px"
-          onClick={() => {
-            setStep(4);
-            open();
-          }}
-        >
-          <SmallCard
-            title={GlobalStrings.skills}
-            desc={`${copy.skills.map((skill) => skill.name).join(", ")}`}
-          />
-        </DetailCard>
-        <DetailCard
-          onClick={() => {
-            setStep(5);
-            open();
-          }}
-          py="16px"
-        >
-          <SmallCard
-            title={GlobalStrings.scope}
-            desc={`${
-              postScopeSizes.filter((size) => size.id == copy.size)?.[0]?.name
-            }, ${
-              postScopeDuration.filter(
-                (duration) => duration.id == copy.duration
-              )?.[0]?.name
-            }, ${
-              postScopeLevel.filter((level) => level.id == copy.level)?.[0]
-                ?.name
-            }`}
-          />
-        </DetailCard>
+        {!fl && (
+          <DetailCard
+            py="16px"
+            onClick={() => {
+              setStep(4);
+              open();
+            }}
+          >
+            <SmallCard
+              title={GlobalStrings.skills}
+              desc={`${copy.skills.map((skill) => skill.name).join(", ")}`}
+            />
+          </DetailCard>
+        )}
+        {!fl && (
+          <DetailCard
+            onClick={() => {
+              setStep(5);
+              open();
+            }}
+            py="16px"
+          >
+            <SmallCard
+              title={GlobalStrings.scope}
+              desc={`${
+                postScopeSizes.filter((size) => size.id == copy.size)?.[0]?.name
+              }, ${
+                postScopeDuration.filter(
+                  (duration) => duration.id == copy.duration
+                )?.[0]?.name
+              }, ${
+                postScopeLevel.filter((level) => level.id == copy.level)?.[0]
+                  ?.name
+              }`}
+            />
+          </DetailCard>
+        )}
         <DetailCard
           py="16px"
           onClick={() => {
@@ -178,11 +184,27 @@ export const PostReviewStep = ({
           <SmallCard
             title={GlobalStrings.budget}
             desc={`${
-              copy.budgetType == BudgetType.hourly
-                ? `₮${priceFormat(`${copy.minPrice ?? ""}`)} - ₮${priceFormat(
-                    `${copy.maxPrice ?? ""}`
-                  )} /${GlobalStrings.hr}`
-                : `₮${priceFormat(`${copy.price ?? 0}`)}`
+              copy.prices[0].budgetType == BudgetType.fixed
+                ? `₮${priceFormat(`${copy.prices[0] ?? 0}`)}`
+                : copy.prices[0].budgetType == BudgetType.hourly
+                ? `₮${priceFormat(
+                    `${copy.prices[0].minPrice ?? ""}`
+                  )} - ₮${priceFormat(`${copy.prices[0].maxPrice ?? ""}`)} /${
+                    GlobalStrings.hr
+                  }`
+                : `₮${priceFormat(
+                    `${copy.prices[0].minPrice ?? ""}`
+                  )} - ₮${priceFormat(`${copy.prices[0].maxPrice ?? ""}`)} /${
+                    GlobalStrings.hr
+                  }₮${priceFormat(
+                    `${copy.prices[1].minPrice ?? ""}`
+                  )} - ₮${priceFormat(`${copy.prices[1].maxPrice ?? ""}`)} /${
+                    GlobalStrings.hr
+                  }₮${priceFormat(
+                    `${copy.prices[2].minPrice ?? ""}`
+                  )} - ₮${priceFormat(`${copy.prices[2].maxPrice ?? ""}`)} /${
+                    GlobalStrings.hr
+                  }`
             }`}
           />
         </DetailCard>
@@ -216,7 +238,7 @@ export const PostReviewStep = ({
             <Select
               mb={20}
               value={
-                postCategories.filter((c) => c.id == copy.category)?.[0].name
+                postCategories.filter((c) => c.id == copy.category)?.[0]?.name
               }
               mt={20}
               labelProps={{
@@ -228,14 +250,13 @@ export const PostReviewStep = ({
                 if (e != null)
                   setCopy((prev) => ({
                     ...prev,
-                    category: postCategories.filter((c) => c.name == e)?.[0]
-                      .id,
+                    category: postCategories.filter((c) => c.name == e)?.[0].id,
                   }));
               }}
               searchable
             />
           )}
-          {step == 4 && (
+          {!fl && step == 4 && (
             <PostSkillCard
               add={(skill) => {
                 let selected = [...copy.skills, skill];
@@ -255,7 +276,7 @@ export const PostReviewStep = ({
               selected={copy.skills}
             />
           )}
-          {step == 5 && (
+          {!fl && step == 5 && (
             <PostScopeCard
               payload={copy}
               onChange={(e, key) => {
@@ -269,27 +290,62 @@ export const PostReviewStep = ({
           )}
           {step == 6 && (
             <PostBudgetCard
-              change={(e, key) => {
-                let numbers: (keyof PostType)[] = [
-                  "price",
-                  "minPrice",
-                  "maxPrice",
-                ];
-                if (numbers.includes(key)) {
-                  let value = 0;
-                  if (e != "")
-                    value = Number.isNaN(parseInt(`${e.split(",").join("")}`))
-                      ? 0
-                      : parseInt(`${e.split(",").join("")}`);
-                  setCopy((prev) => ({ ...prev, [key]: value }));
+              fl={type == UserType.FREELANCER}
+              change={(el, k) => {
+                let e = el.split(",").join("");
+                let index = copy.prices.findIndex(
+                  (p) => p.budgetType == copy.current
+                );
+                if (index != -1) {
+                  copy.prices[index][k] = isNaN(parseInt(e)) ? 0 : parseInt(e);
+                  setCopy((prev) => ({ ...prev }));
                 } else {
-                  setCopy((prev) => ({ ...prev, [key]: e }));
+                  let prices = [
+                    ...copy.prices,
+                    {
+                      minPrice:
+                        k == "minPrice"
+                          ? isNaN(parseInt(e))
+                            ? 0
+                            : parseInt(e)
+                          : 0,
+                      maxPrice:
+                        k == "maxPrice"
+                          ? isNaN(parseInt(e))
+                            ? 0
+                            : parseInt(e)
+                          : 0,
+                      price:
+                        k == "price"
+                          ? isNaN(parseInt(e))
+                            ? 0
+                            : parseInt(e)
+                          : 0,
+                      budgetType: copy.current,
+                    },
+                  ];
+                  setCopy((prev) => ({ ...prev, prices: prices }));
                 }
               }}
-              type={copy.budgetType}
-              maxPrice={copy.maxPrice}
-              minPrice={copy.minPrice}
-              price={copy.price}
+              prices={
+                copy.prices.filter((e) => e.budgetType == copy.current)?.[0] ??
+                copy.prices[0]
+              }
+              setCurrent={(e) => {
+                if (!copy.prices.filter((a) => a.budgetType == e)[0]) {
+                  let prices = [
+                    ...copy.prices,
+                    {
+                      minPrice: 0,
+                      maxPrice: 0,
+                      price: 0,
+                      budgetType: e,
+                    },
+                  ];
+                  setCopy((prev) => ({ ...prev, prices: prices }));
+                }
+                setCopy((prev) => ({ ...prev, current: e }));
+              }}
             />
           )}
           <Group justify="end">
@@ -306,7 +362,7 @@ export const PostReviewStep = ({
             </Button>
           </Group>
         </Modal>
-        <Group justify="space-between">
+        <Group justify="space-between" mb={20} px={20}>
           <Button
             variant="light"
             radius={"lg"}
